@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vtinstitute>
+    <students>
+
+        <student>
+            <idcard>12348888</idcard>
+            <firstname>Ana</firstname>
+            <lastname>Pérez</lastname>
+            <email>ana.perez@example.com</email>
+            <phone>611223344</phone>
+        </student>
+
+        <student>
+            <idcard>12348889</idcard>
+            <firstname>Carlos</firstname>
+            <lastname>López</lastname>
+            <email>carlos.lopez@example.com</email>
+            <phone>622334455</phone>
+        </student>
+
+    </students>
+</vtinstitute>
