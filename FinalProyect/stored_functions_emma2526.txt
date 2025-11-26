@@ -1,0 +1,6 @@
+Funcion que cree en pgadmin
+
+
+1. subjects_passed_emma_2526
+2. subjects_pending_emma_2526
+3. enroll_student_emma_2526

@@ -25,5 +25,24 @@ public class StudentController {
         service.insertarListaEstudiantes(students);
     }
 
+    public void enrollStudent(Scanner scanner) {
+        System.out.print("Introduce student ID: ");
+        String studentId = scanner.nextLine().trim();
+        System.out.print("Introduce course ID: ");
+        int courseId = Integer.parseInt(scanner.nextLine().trim());
+
+        try {
+            List<Object[]> subjects = service.enrollStudent(studentId, courseId);
+
+            System.out.println("Asignaturas matriculadas:");
+            for (Object[] sub : subjects) {
+                System.out.println("ID: " + sub[0] + " - Nombre: " + sub[1]);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error al matricular estudiante: " + e.getMessage());
+        }
+    }
+
 
 }

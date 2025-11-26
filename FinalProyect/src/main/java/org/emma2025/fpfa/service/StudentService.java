@@ -16,6 +16,11 @@ public class StudentService {
         this.session = session;
         this.repo = repo;
     }
+    //Creamos una funcion que devuelva la lista , le pasamos por parametro los 2 id
+    public List<Object[]> enrollStudent(String studentId, int courseId) {
+        //Y solamente retornamos llamando a la funcion que viene de StudenRepository
+        return repo.enrollStudent(studentId, courseId);
+    }
 
     public void insertarListaEstudiantes(List<Student> students) {
         Transaction tx = session.beginTransaction();
