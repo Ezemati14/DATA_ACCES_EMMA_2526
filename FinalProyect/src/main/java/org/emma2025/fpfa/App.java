@@ -16,8 +16,8 @@ public class App {
         StudentController controller = new StudentController(session);
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("> ");
-        String input = sc.nextLine();
+        System.out.println("> vtinstitute para entrar o exit para salir ");
+        String input = sc.nextLine().toLowerCase();
 
         if (input.equalsIgnoreCase("vtinstitute")) {
 
@@ -27,22 +27,26 @@ public class App {
                 System.out.println("-h / --help → mostrar ayuda");
                 System.out.println("-a / --add {archivo.xml} → importar estudiantes");
                 System.out.println("-e / --enroll → {studentID} {courseId} matricular estudiante");
+                System.out.println("-p / --print → {studentID} {courseId} Imprime notas del estudiante");
+                System.out.println("-q / --qualify → {studentID} {courseId} Insertamos la nota del estudiante");
                 System.out.println("exit → salir");
 
                 System.out.print("> ");
-                String cmd = sc.nextLine().trim();
+                String cmd = sc.nextLine().trim().toLowerCase();
 
                 if (cmd.equalsIgnoreCase("exit")) {
                     running = false;
                     System.out.println("Cerrando sesión...");
                     session.close();
-                    System.out.println("Session cerrada. Adiós.");
                 }
                 else if (cmd.equals("--help") || cmd.equals("-h")) {
                     System.out.println("Opciones disponibles:");
-                    System.out.println("-a / --add {archivo.xml} → importar estudiantes desde XML");
-                    System.out.println("-e / --enroll → {studentID} {courseId} matricular estudiante en un curso");
-                    System.out.println("exit → salir de la aplicación");
+                    System.out.println("-h / --help → mostrar ayuda");
+                    System.out.println("-a / --add {archivo.xml} → importar estudiantes");
+                    System.out.println("-e / --enroll → {studentID} {courseId} matricular estudiante");
+                    System.out.println("-p / --print → {studentID} {courseId} Imprime notas del estudiante");
+                    System.out.println("-q / --qualify → {studentID} {courseId} Insertamos la nota del estudiante");
+                    System.out.println("exit → salir");
                 }
                 else if (cmd.startsWith("--add")) {
                     String[] parts = cmd.split(" ");
@@ -57,6 +61,14 @@ public class App {
                     //Se llamada a la funcion del controlador,
                     // que esta conectado con el service y repository
                     controller.enrollStudent(sc);
+                }
+                else if(cmd.equals("--qualify") || cmd.equals("-q")) {
+                    //Cuando ponemos -q, entra a esta funcion y se va al controlador
+                    // sc = -q    ... sc vale -q
+                    controller.qualify(sc);
+                }
+                else if (cmd.equals("--print") || cmd.equals("-p")) {
+                    controller.printResults(sc);
                 }
                 else {
                     System.out.println("Comando no reconocido. Usa --help para ver opciones.");
