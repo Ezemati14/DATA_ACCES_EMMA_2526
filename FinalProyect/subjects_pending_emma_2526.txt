@@ -1,0 +1,12 @@
+
+BEGIN
+    RETURN QUERY
+    SELECT s.code
+    FROM _da_vtschool_2526.subjects s
+    JOIN _da_vtschool_2526.subject_courses sc ON sc.subject_id = s.code
+    WHERE sc.course_id = p_course_id
+      AND s.code NOT IN (
+            SELECT sp.subject_id
+            FROM _da_vtschool_2526.subjects_passed_emma_2526(p_student_id, p_course_id) AS sp(subject_id)
+      );
+END;

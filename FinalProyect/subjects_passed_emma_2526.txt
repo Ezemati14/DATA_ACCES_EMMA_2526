@@ -1,0 +1,10 @@
+
+BEGIN
+    RETURN QUERY
+    SELECT sc.subject_id
+    FROM _da_vtschool_2526.scores sc
+    JOIN _da_vtschool_2526.enrollments e ON sc.enrollment_id = e.code
+    WHERE e.student = p_student_id
+      AND e.course = p_course_id
+      AND sc.score >= 5;
+END;
