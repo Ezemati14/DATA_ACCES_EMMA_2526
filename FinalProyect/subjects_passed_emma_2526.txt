@@ -1,4 +1,6 @@
-
+SET search_path TO _da_vtschool_2526;
+CREATE OR REPLACE FUNCTION subjects_passed_emma_2526(p_student_id VARCHAR, p_course_id INT)
+RETURNS TABLE(subject_id INT) AS $$
 BEGIN
     RETURN QUERY
     SELECT sc.subject_id
@@ -8,3 +10,24 @@ BEGIN
       AND e.course = p_course_id
       AND sc.score >= 5;
 END;
+$$ LANGUAGE plpgsql;
+
+
+
+-------------------------------------------------------------------------------------
+
+SET search_path = _da_vtschool_2526;
+CREATE OR REPLACE FUNCTION _da_vtschool_2526.subjects_passed_emma_2526(p_student_id character varying, p_course_id integer)
+ RETURNS TABLE(subject_id integer)
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+    RETURN QUERY
+    SELECT sc.subject_id
+    FROM _da_vtschool_2526.scores sc
+    JOIN _da_vtschool_2526.enrollments e ON sc.enrollment_id = e.code
+    WHERE e.student = p_student_id
+      AND e.course = p_course_id
+      AND sc.score >= 5;
+END;
+$function$
