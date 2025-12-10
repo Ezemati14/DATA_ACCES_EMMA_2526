@@ -52,10 +52,24 @@ public class ServiceScores {
         System.out.println("Calificaciones completadas.");
     }
 
+    public void printStudentResult(int courseId) {
+        List<Object[]> results = repo.getAllStudents(courseId);
+        if(results.isEmpty()){
+            System.out.println("No hay asignaturas pendientes.");
+        }
+
+        System.out.println("\nStudent                        Score");
+        System.out.println("--------------------------------------------------");
+
+        for(Object[] result: results){
+            String name = (String) result[0];
+            int score = (int) result[1];
+            System.out.println("Name: " + name + " Score: " + score);
+        }
+    }
+
     public void printResults(String studentId, int courseId) {
-
         List<Object[]> results = repo.getAllScores(studentId, courseId);
-
         if (results.isEmpty()) {
             System.out.println("No se encontraron asignaturas para este estudiante.");
             return;
@@ -69,7 +83,6 @@ public class ServiceScores {
             String subject = (String) row[1];
             Integer score = (Integer) row[2];
 
-            // Formato EXACTO requerido
             System.out.printf("%-6d %-35s %s%n",
                     year,
                     subject,

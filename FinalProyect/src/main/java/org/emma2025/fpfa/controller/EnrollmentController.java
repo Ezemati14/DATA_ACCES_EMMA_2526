@@ -14,18 +14,4 @@ public class EnrollmentController {
         this.session = session;
     }
 
-    public void eliminaMatricula(Scanner sc) {
-        System.out.print("Student ID: ");
-        String studentId = sc.nextLine();
-
-        RepositoryEnrollment repo = new RepositoryEnrollment(session);
-        repo.cancelCurrentYearEnrollments(studentId);
-    }
-    public void deleteStudent(Scanner sc) {
-        System.out.print("Student ID: ");
-        String studentId = sc.nextLine();
-
-        ServiceEnrollment service = new ServiceEnrollment(session);
-        service.deleteStudent(studentId);
-    }
 }

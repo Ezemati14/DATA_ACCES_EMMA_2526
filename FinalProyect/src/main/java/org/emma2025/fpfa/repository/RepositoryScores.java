@@ -51,6 +51,18 @@ public class RepositoryScores {
                 .setParameter("scoreId", scoreId)
                 .executeUpdate();
     }
+
+    public List<Object[]> getAllStudents(int courseId) {
+        List resultList = session.createNativeQuery("SELECT enrollments.student, scores.score " +
+                        "FROM _da_vtschool_2526.scores scores\n" +
+                        "JOIN _da_vtschool_2526.enrollments enrollments ON enrollments.code = scores.enrollment_id\n" +
+                        "WHERE enrollments.course = :courseId " +
+                        "AND scores.score < 5")
+                .setParameter("courseId", courseId)
+                .getResultList();
+        return resultList;
+    }
+
     //En esta query nos devuelve todas las asignaturas de un estudiante y curso especifico
     public List<Object[]> getAllScores(String studentId, int courseId) {
         List resultList = session.createNativeQuery(

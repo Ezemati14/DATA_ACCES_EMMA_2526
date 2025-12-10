@@ -12,7 +12,4 @@ public class ServiceEnrollment {
         this.repo = new RepositoryEnrollment(session);
     }
 
-    public void deleteStudent(String studentId) {
-        repo.deleteStudents(studentId);
-    }
 }

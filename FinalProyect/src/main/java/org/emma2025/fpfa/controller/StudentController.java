@@ -62,6 +62,14 @@ public class StudentController {
         serviceScores.qualifySubjects(studentId, courseId, sc);
     }
 
+    public void printResulStudent(Scanner sc) {
+        System.out.print("Course ID: ");
+        int courseId = Integer.parseInt(sc.nextLine());
+
+        ServiceScores serviceScores = new ServiceScores(session);
+        serviceScores.printStudentResult(courseId);
+    }
+
     public void printResults(Scanner sc) {
         System.out.print("Student ID: ");
         String studentId = sc.nextLine();
