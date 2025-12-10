@@ -32,6 +32,7 @@ public class App {
                 System.out.println("-q / --qualify → {studentID} {courseId} Insertamos la nota del estudiante");
                 System.out.println("-u / --unenroll → {studentID} Borrar matricula del estudiante de ese curso");
                 System.out.println("-d / --delete → {studentID} Borrar estudiante");
+                System.out.println("-c / --close → {studentID} Cerrar curso academico.");
                 System.out.println("exit → salir");
 
                 System.out.print("> ");
@@ -51,6 +52,7 @@ public class App {
                     System.out.println("-q / --qualify → {studentID} {courseId} Insertamos la nota del estudiante");
                     System.out.println("-u / --unenroll → {studentID} Borrar matricula del estudiante de ese curso");
                     System.out.println("-d / --delete → {studentID} Borrar estudiante");
+                    System.out.println("-c / --close → {studentID} Cerrar curso academico.");
                     System.out.println("exit → salir");
                 }
                 else if (cmd.startsWith("--add")) {

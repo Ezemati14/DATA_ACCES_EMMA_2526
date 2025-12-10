@@ -2,6 +2,7 @@ package org.emma2025.fpfa.model.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -19,23 +20,30 @@ public class Student {
     @Column(name = "lastname", nullable = false, length = 100)
     private String lastname;
 
-    @Column(name = "phone", length = 12)
+    @Column(name = "phone", nullable = false, length = 12)
     private String phone;
 
     @Column(name = "email", length = 100)
     private String email;
+
+    @Column(name = "birthdate")
+    private Date birthdate;
 
     @OneToMany(mappedBy = "student")
     private Set<Enrollment> enrollments = new LinkedHashSet<>();
 
     public Student() {}
 
-    public Student(String idcard, String firstname, String lastname, String email, String phone) {
+    public Student(String idcard, String firstname, String lastname, String email, String phone, Date birthdate) {
         this.idcard = idcard;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.phone = phone;
+        this.birthdate = birthdate;
+    }
+
+    public Student(String id, String fn, String ln, String email, String phone, String birthdate) {
     }
 
     public String getIdcard() {
@@ -77,6 +85,10 @@ public class Student {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public Date getBirthdate() { return birthdate; }
+
+    public void setBirthdate(Date birthdate) { this.birthdate = birthdate; }
 
     public Set<Enrollment> getEnrollments() {
         return enrollments;

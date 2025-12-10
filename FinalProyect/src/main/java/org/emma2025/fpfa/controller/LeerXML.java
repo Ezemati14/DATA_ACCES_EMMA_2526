@@ -9,6 +9,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class LeerXML {
@@ -37,8 +38,9 @@ public class LeerXML {
                     String ln = get(el, "lastname");
                     String email = get(el, "email");
                     String phone = get(el, "phone");
+                    String birthdate = get(el, "birthdate");
 
-                    list.add(new Student(id, fn, ln, email, phone));
+                    list.add(new Student(id, fn, ln, email, phone, birthdate));
                 }
             }
 
