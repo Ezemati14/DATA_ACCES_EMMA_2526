@@ -11,7 +11,6 @@ import java.util.Scanner;
 public class App {
 
     public static void main(String[] args) {
-
         // Creamos la sesión una única vez para toda la aplicación
         Session session = HibernateUtil.getSessionFactory().openSession();
         StudentController controller = new StudentController(session);
