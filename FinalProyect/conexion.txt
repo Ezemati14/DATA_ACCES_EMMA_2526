@@ -1,0 +1,3 @@
+ruta conexion = jdbc:postgresql://localhost:5432/vtschool
+usuario = postgres
+contraseña = boca
