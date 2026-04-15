@@ -1,0 +1,11 @@
+@RestController	API REST
+@GetMapping	GET
+@PostMapping	POST
+@RequestBody	JSON → objeto
+@PathVariable	Valor en URL
+ResponseEntity	Control de respuestas
+
+PETICION POST --> INSERTAR DATOS
+PETICION PUT --> ACTUALIZAR DATOS
+
+Base de datos conecta--> DAO (Data Access Object)--> Service (Lógica de negocio)--> Controlador (API REST)
