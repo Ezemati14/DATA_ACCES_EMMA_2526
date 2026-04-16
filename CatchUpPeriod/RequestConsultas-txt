@@ -1,0 +1,21 @@
+--> GET bookst = http://localhost:8080/books
+--> POST books = http://localhost:8080/books
+    BODY books = {
+                   "isbn": "0141189209999",
+                   "title": "Lo que el viento se llevo",
+                   "copies": 1,
+                   "outline": "",
+                   "publisher": "Penguin Books Ltd",
+                   "category": {
+                     "code": "LIT"
+                   }
+                 }
+------------------------------------------------------
+--> GET users = http://localhost:8080/users
+
+------------------------------------------------------
+// Para reservar libro cuando hay libros disponibles
+--> POST lending = http://localhost:8080/lending/lend?isbn=0141189207445&userCode=A786543
+
+// Para reservar libro cuando no hay libros disponibles, y se reserva
+--> POST lending = http://localhost:8080/lending/lend?isbn=0141189207445&userCode=A786543&reservar=true

@@ -1,0 +1,285 @@
+--
+-- PostgreSQL database dump
+--
+-- Dumped from database version 15.14
+-- Dumped by pg_dump version 17.6
+
+-- Started on 2026-03-24 16:13:32
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: books; Type: TABLE; Schema: library2526
+--
+
+CREATE TABLE public.books (
+    isbn character varying(13) NOT NULL,
+    title character varying(90) NOT NULL,
+    copies integer DEFAULT 1,
+    outline character varying(255),
+    publisher character varying(60),
+    category character varying(8) NOT NULL
+);
+
+--
+-- Name: categories; Type: TABLE; Schema: public
+--
+
+CREATE TABLE pucategories (
+    code character varying(8) NOT NULL,
+    name character varying(60) NOT NULL
+);
+
+--
+-- Name: lendings; Type: TABLE; Schema: public
+--
+
+CREATE TABLE lendings (
+    id integer NOT NULL,
+    lendingdate date NOT NULL,
+    returningdate date DEFAULT NULL,
+    book character varying(13) NOT NULL,
+    borrower character varying(8) NOT NULL
+);
+
+--
+-- Name: lendings_id_seq; Type: SEQUENCE; Schema: public
+--
+
+CREATE SEQUENCE lendings_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER SEQUENCE lendings_id_seq OWNED BY lendings.id;
+
+--
+-- Name: reservations; Type: TABLE; Schema: public
+--
+
+CREATE TABLE reservations (
+    id integer NOT NULL,
+    date date NOT NULL,
+    book character varying(13) NOT NULL,
+    borrower character varying(8) NOT NULL,
+    lending integer DEFAULT NULL
+);
+
+--
+-- Name: reservations_id_seq; Type: SEQUENCE; Schema: public
+--
+
+CREATE SEQUENCE reservations_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER SEQUENCE reservations_id_seq OWNED BY reservations.id;
+
+--
+-- Name: users; Type: TABLE; Schema: public
+--
+
+CREATE TABLE users (
+    code character varying(8) NOT NULL,
+    name character varying(25) NOT NULL,
+    surname character varying(25) NOT NULL,
+    birthdate date,
+    fined date,
+    phone character varying(9),
+    email character varying(100)
+);
+
+--
+-- Name: lendings id; Type: DEFAULT; Schema: public
+--
+
+ALTER TABLE ONLY lendings ALTER COLUMN id SET DEFAULT nextval('lendings_id_seq'::regclass);
+
+--
+-- Name: reservations id; Type: DEFAULT; Schema: public
+--
+
+ALTER TABLE ONLY reservations ALTER COLUMN id SET DEFAULT nextval('reservations_id_seq'::regclass);
+
+--
+-- Data for Name: categories; Type: TABLE DATA; Schema: public
+--
+
+INSERT INTO categories VALUES ('LIT', 'Literature');
+INSERT INTO categories VALUES ('HIST', 'History & Politics');
+INSERT INTO categories VALUES ('DRAMA', 'Drama & Theatre');
+INSERT INTO categories VALUES ('REF', 'Reference & Linguistics');
+INSERT INTO categories VALUES ('ARCH', 'Archaeology & Heritage');
+INSERT INTO categories VALUES ('OTHER', 'Other');
+
+--
+-- Data for Name: books; Type: TABLE DATA; Schema: public
+--
+
+INSERT INTO books VALUES ('0141189207445', 'Love in the Time of Cholera', 1, '', 'Penguin Books Ltd', 'LIT');
+INSERT INTO books VALUES ('0141403257445', 'Living to Tell the Tale', 3, '', 'Penguin Books Ltd', 'LIT');
+INSERT INTO books VALUES ('0192834177425', 'The Tragedy of Macbeth', 5, '', 'Oxford University Press', 'DRAMA');
+INSERT INTO books VALUES ('0521316928985', 'One Hundred Years of Solitude', 6, '', 'Cambridge University Press', 'LIT');
+INSERT INTO books VALUES ('9780060722302', 'Nixon and Kissinger', 1, '', 'HarperCollins Publishers Inc', 'HIST');
+INSERT INTO books VALUES ('9780141028736', 'Memories of My Melancholy Whores', 1, '', 'Penguin Books Ltd', 'LIT');
+INSERT INTO books VALUES ('9780195062052', 'The American Style of Foreign Policy', 1, '', 'Oxford University Press', 'HIST');
+INSERT INTO books VALUES ('9780198244387', 'Writings on Logic and Metaphysics', 2, '', 'OXFORD UNIVERSITY PRESS', 'REF');
+INSERT INTO books VALUES ('9780199535897', 'Romeo and Juliet', 3, '', 'Oxford University Press', 'DRAMA');
+INSERT INTO books VALUES ('9780415141444', 'Dictionary of Lexicography', 2, '', 'Taylor & Francis Ltd', 'REF');
+INSERT INTO books VALUES ('9781402209222', 'Let Every Nation Know', 2, '', 'Sourcebooks MediaFusion', 'HIST');
+INSERT INTO books VALUES ('9781407302898', 'Canoes of the Grand Ocean', 2, '', 'British Archaeological Reports', 'ARCH');
+INSERT INTO books VALUES ('9781901992298', 'Researc Framework for London Archaeology', 3, '', 'Museum of London Archaeology Service', 'ARCH');
+
+--
+-- Data for Name: lendings; Type: TABLE DATA; Schema: public
+--
+
+INSERT INTO lendings VALUES (1, '2008-11-28', '2008-12-17', '0141403257445', 'A786543');
+INSERT INTO lendings VALUES (2, '2008-11-04', '2008-11-30', '9781402209222', 'A786543');
+INSERT INTO lendings VALUES (3, '2008-11-27', '2009-01-13', '0192834177425', 'A786543');
+INSERT INTO lendings VALUES (4, '2008-11-24', '2008-11-30', '9780141028736', 'A786543');
+INSERT INTO lendings VALUES (5, '2008-11-29', '2008-12-10', '9781402209222', 'E433982');
+INSERT INTO lendings VALUES (6, '2008-11-11', '2008-11-30', '0521316928985', 'E433982');
+INSERT INTO lendings VALUES (7, '2008-11-30', '2009-01-15', '0192834177425', 'S976543');
+INSERT INTO lendings VALUES (8, '2008-11-28', '2009-01-06', '0192834177425', 'X328976');
+INSERT INTO lendings VALUES (9, '2008-12-11', '2009-02-27', '0141189207445', 'M512776');
+INSERT INTO lendings VALUES (10, '2008-11-28', '2009-01-13', '9780141028736', 'T654322');
+INSERT INTO lendings VALUES (11, '2008-11-29', '2009-01-07', '9780199535897', 'T654322');
+INSERT INTO lendings VALUES (12, '2008-11-07', '2008-11-29', '0141189207445', 'T654322');
+
+--
+-- Data for Name: reservations; Type: TABLE DATA; Schema: public
+--
+
+-- (empty)
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public
+--
+
+INSERT INTO users VALUES ('A786543', 'Emily',    'Johnson',   '1983-11-14', NULL, '612345678', 'emily.johnson@mail.com');
+INSERT INTO users VALUES ('B329087', 'Jessica',  'Williams',  '1984-04-10', NULL, NULL,        'jessica.williams@email.com');
+INSERT INTO users VALUES ('E433982', 'James',    'Brown',     '1965-08-28', NULL, '634987654', NULL);
+INSERT INTO users VALUES ('E722654', 'Oliver',   'Smith',     '1994-09-05', NULL, '698123456', 'oliver.smith@mail.com');
+INSERT INTO users VALUES ('K893417', 'Edward',   'Jones',     '1984-09-18', NULL, NULL,        NULL);
+INSERT INTO users VALUES ('M512776', 'George',   'Taylor',    '1982-08-12', NULL, '655432109', 'george.taylor@email.com');
+INSERT INTO users VALUES ('P734007', 'Laura',    'Davies',    '1981-11-14', NULL, NULL,        'laura.davies@mail.com');
+INSERT INTO users VALUES ('S976543', 'Victoria', 'Wilson',    '1985-04-10', NULL, '671890234', NULL);
+INSERT INTO users VALUES ('T312987', 'Nicholas', 'Thompson',  '1985-08-28', NULL, NULL,        NULL);
+INSERT INTO users VALUES ('T654322', 'Mary',     'Anderson',  '1965-09-05', NULL, '643210987', 'mary.anderson@email.com');
+INSERT INTO users VALUES ('X188263', 'Stephanie','Martin',    '1982-02-10', NULL, NULL,        NULL);
+INSERT INTO users VALUES ('X328976', 'Patricia', 'Robinson',  '1986-09-18', NULL, '687654321', NULL);
+INSERT INTO users VALUES ('X887543', 'Angela',   'Clark',     '1980-08-12', NULL, NULL,        'angela.clark@mail.com');
+INSERT INTO users VALUES ('Z124533', 'William',  'Walker',    '1979-02-10', NULL, '619876543', 'william.walker@email.com');
+
+--
+-- Name: lendings_id_seq; Type: SEQUENCE SET; Schema: public
+--
+
+SELECT pg_catalog.setval('lendings_id_seq', 12, true);
+
+--
+-- Name: reservations_id_seq; Type: SEQUENCE SET; Schema: public
+--
+
+SELECT pg_catalog.setval('reservations_id_seq', 1, false);
+
+--
+-- Name: books books_pkey; Type: CONSTRAINT; Schema: public
+--
+
+ALTER TABLE ONLY books
+    ADD CONSTRAINT books_pkey PRIMARY KEY (isbn);
+
+--
+-- Name: categories categories_pkey; Type: CONSTRAINT; Schema: public
+--
+
+ALTER TABLE ONLY categories
+    ADD CONSTRAINT categories_pkey PRIMARY KEY (code);
+
+--
+-- Name: lendings lendings_pkey; Type: CONSTRAINT; Schema: public
+--
+
+ALTER TABLE ONLY lendings
+    ADD CONSTRAINT lendings_pkey PRIMARY KEY (id);
+
+--
+-- Name: reservations reservations_pkey; Type: CONSTRAINT; Schema: public
+--
+
+ALTER TABLE ONLY reservations
+    ADD CONSTRAINT reservations_pkey PRIMARY KEY (id);
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (code);
+
+--
+-- Name: books books_ibfk_category; Type: FK CONSTRAINT; Schema: public
+--
+
+ALTER TABLE ONLY books
+    ADD CONSTRAINT books_ibfk_category FOREIGN KEY (category) REFERENCES categories(code) ON UPDATE CASCADE;
+
+--
+-- Name: lendings lendings_ibfk_1; Type: FK CONSTRAINT; Schema: public
+--
+
+ALTER TABLE ONLY lendings
+    ADD CONSTRAINT lendings_ibfk_1 FOREIGN KEY (book) REFERENCES books(isbn) ON UPDATE CASCADE;
+
+--
+-- Name: lendings lendings_ibfk_2; Type: FK CONSTRAINT; Schema: public
+--
+
+ALTER TABLE ONLY lendings
+    ADD CONSTRAINT lendings_ibfk_2 FOREIGN KEY (borrower) REFERENCES users(code) ON UPDATE CASCADE;
+
+--
+-- Name: reservations reservations_ibfk_1; Type: FK CONSTRAINT; Schema: public
+--
+
+ALTER TABLE ONLY reservations
+    ADD CONSTRAINT reservations_ibfk_1 FOREIGN KEY (book) REFERENCES books(isbn) ON UPDATE CASCADE;
+
+--
+-- Name: reservations reservations_ibfk_2; Type: FK CONSTRAINT; Schema: public
+--
+
+ALTER TABLE ONLY reservations
+    ADD CONSTRAINT reservations_ibfk_2 FOREIGN KEY (borrower) REFERENCES users(code) ON UPDATE CASCADE;
+
+ALTER TABLE reservations ADD CONSTRAINT reservations_ibfk_3 FOREIGN KEY (lending) REFERENCES lendings(id);
+
+-- Completed on 2026-03-24 16:13:37
+
+--
+-- PostgreSQL database dump complete
+--
+
+
