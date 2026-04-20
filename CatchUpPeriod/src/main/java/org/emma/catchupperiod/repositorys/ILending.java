@@ -8,6 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ILending extends CrudRepository<Lending, Integer> {
@@ -15,4 +16,6 @@ public interface ILending extends CrudRepository<Lending, Integer> {
     int countByBorrowerAndReturningdateIsNull(User borrower);
 
     int countByBookAndReturningdateIsNull(Book book);
+
+    Optional<Lending> findByBookAndBorrowerAndReturningdateIsNull(Book book, User borrower);
 }

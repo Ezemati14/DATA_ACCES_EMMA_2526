@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService{
@@ -34,4 +35,11 @@ public class UserService{
         }
         return usuariosDto;
     }
+
+    public User loginUser(User user) {
+        //Para porder usar el orElse, en el repository tenemos que marcar el metodo como Optional.
+     return userRepository.findBySurnameAndCode(user.getSurname(), user.getCode())
+               .orElse(null);
+    }
+
 }

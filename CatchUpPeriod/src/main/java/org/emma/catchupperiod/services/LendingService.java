@@ -87,4 +87,48 @@ public class LendingService {
 
         return "Prestamo completo por usuario : " + user.getName();
     }
+
+    public String returnBook(String isbn, String userCode) {
+        //Este mensaje se va actualizando segun el resultado de cada paso.
+        String mensaje = "Libro devuelvedo correctamente";
+
+        //De esta manera buscamos por el isbn y el id en la base de datos
+        User usuario = usersRepository.findById(userCode)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+
+        Book libro = booksRepository.findById(isbn)
+                .orElseThrow(() -> new IllegalArgumentException("Libro no encontrado"));
+
+        //Usamos este metodo para buscar ese libro, usuario, y que el returningDate sea null
+        //Asi sabemos que ese libro no se devolvio.
+        Lending prestamo = lendingRepository.findByBookAndBorrowerAndReturningdateIsNull(libro, usuario)
+                .orElseThrow(() -> new IllegalArgumentException("Prestamo no encontrado"));
+
+        //Agarramos la fecha de hoy
+        LocalDate today = LocalDate.now();
+        //Con set, guardamos la fecha de hoy que esta en today
+        //Decimos que hoy se devolvio el libro
+        prestamo.setReturningdate(today);
+        //Y guardamos en la base de datos, la fecha
+        lendingRepository.save(prestamo);
+        //Comprobamos retraso de 7 dias
+        LocalDate fechaLimite = prestamo.getLendingdate().plusDays(7);
+
+        if(today.isAfter(fechaLimite)) {
+            //Le agregamos sancion al usuario de 15 dias
+            usuario.setFined(today.plusDays(15));
+            usersRepository.save(usuario);
+            mensaje += "Usuario sancionado por retraso de 15 dias";
+        }
+        List<Reservation> reservas = reservationRepository.findByBookOrderByDateAsc(libro);
+
+        if(!reservas.isEmpty()) {
+            Reservation primera = reservas.get(0);
+            User reservado = primera.getBorrower();
+            mensaje += " Libro reservado por: "
+                    + reservado.getCode() + " - "
+                    + reservado.getName();
+        }
+        return mensaje;
+    }
 }
