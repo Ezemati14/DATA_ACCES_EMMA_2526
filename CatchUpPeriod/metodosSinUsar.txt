@@ -1,0 +1,6 @@
+---> Metodo que devuelve lista de libros, pero usando DTO
+    //Metodo que va en el BookController.
+        @GetMapping("/dto")
+        public List<BookDto> getAllBooksDto() {
+            return bookService.findAllDto();
+        }

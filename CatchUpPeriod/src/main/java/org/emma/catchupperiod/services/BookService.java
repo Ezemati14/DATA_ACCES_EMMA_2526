@@ -7,6 +7,7 @@ import org.emma.catchupperiod.repositorys.IBooks;
 import org.emma.catchupperiod.repositorys.ICategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,18 +19,6 @@ public class BookService {
     private IBooks booksInterface;
     @Autowired
     private ICategory categoryRepository;
-
-
-    /*//DEVUELVE UNA LISTA DE LIBROS PERO USANDO DTO
-    public List<BookDto> findAllDto() {
-        List<Book> books = (List<Book>) booksInterface.findAll();
-        List<BookDto> booksDto = new ArrayList<>();
-
-        for(Book book : books) {
-            booksDto.add(new BookDto(book.getTitle(), book.getCopies()));
-        }
-        return booksDto;
-    }*/
 
     //Devuelve una lista personalizada de libros.
     //Aca mostramos los datos que nosotros queremos mostrar.
@@ -82,5 +71,27 @@ public class BookService {
 
         book.setCategory(category);
         booksInterface.save(book);
+    }
+
+    @Transactional
+    public void saveAll(List<Book> books) {
+        for (Book book : books) {
+            if (book.getIsbn() == null || book.getIsbn().isEmpty()) {
+                throw new IllegalArgumentException("ISBN obligatiorio" + book);
+            }
+
+            if(book.getTitle() == null || book.getTitle().isEmpty()) {
+                throw new IllegalArgumentException("Titulo obligatiorio" + book);
+            }
+
+            if (book.getCopies() == null || book.getCopies() <= 0) {
+                throw new IllegalArgumentException("Copias incorrectas: " + book);
+            }
+
+            if (booksInterface.existsById(book.getIsbn())) {
+                throw new IllegalArgumentException("ISBN duplicado: " + book.getIsbn());
+            }
+        } //cierre del for
+        booksInterface.saveAll(books);
     }
 }

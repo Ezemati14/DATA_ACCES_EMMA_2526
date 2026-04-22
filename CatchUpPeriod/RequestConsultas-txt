@@ -10,6 +10,28 @@
                      "code": "LIT"
                    }
                  }
+ --> POST JSON books = http://localhost:8080/books/add-books
+            BODY JSON books =
+                    [
+                      {
+                        "isbn": "111",
+                        "title": "Libro 1",
+                        "copies": 2,
+                        "publisher": "Test",
+                        "category": {
+                          "code": "LIT"
+                        }
+                      },
+                      {
+                        "isbn": "222",
+                        "title": "Libro 2",
+                        "copies": 3,
+                        "publisher": "Test",
+                        "category": {
+                          "code": "LIT"
+                        }
+                      }
+                    ]
 ------------------------------------------------------ USERS
 --> GET users = http://localhost:8080/users
 

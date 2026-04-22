@@ -1,6 +1,7 @@
 package org.emma.catchupperiod.controller;
 
 import org.emma.catchupperiod.entities.User;
+import org.emma.catchupperiod.entities.UserList;
 import org.emma.catchupperiod.entitiesDTO.UserDto;
 import org.emma.catchupperiod.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,16 @@ public class UserController {
             return ResponseEntity.ok("Bienvenido " + user1.getName());
         }else {
             return ResponseEntity.status(401).body("Credenciales incorrectas");
+        }
+    }
+
+    @PostMapping(value = "/add-xml", consumes = "application/xml")
+    public ResponseEntity<String> addUser(@RequestBody UserList userList){
+        try {
+            userService.saveAll(userList.getUsers());
+            return ResponseEntity.ok("Usuarios creados correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
