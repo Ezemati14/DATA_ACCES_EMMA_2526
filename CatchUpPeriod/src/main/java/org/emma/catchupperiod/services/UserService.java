@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService{
@@ -43,6 +42,18 @@ public class UserService{
                .orElse(null);
     }
 
+    //Lo que nos llega por parametro es el usuario con los datos que vamos actualizar
+    public User updateUser(User user) {
+        //En esta variable guardamos el usuario que tenemos en la base de datos.
+        //Que lo buscamos con el codigo que obtenemos del usuario que nos llega por parametro.
+        User usuDB = userRepository.findById(user.getCode())
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+
+        //Funcion para acttualizar los datos, pasandole usuario de BD y el usuario que nos llega por parametro.
+        actualizarDatos(user, usuDB);
+        return userRepository.save(usuDB);
+    }
+
     @Transactional
     public void saveAll(List<User> users) {
 
@@ -64,6 +75,28 @@ public class UserService{
             }
         }//cierre del for
         userRepository.saveAll(users);
+    }
+
+
+    //--------------- FUNCIONES PRIVADAS -----------------
+    private void actualizarDatos(User user, User usuDB) {
+        //Obtenemos el nombre y si es diferente de null.
+        if(user.getName() != null) {
+            //Con set guardamos actualizamos el nombre que nos llego del body
+            usuDB.setName(user.getName());
+        }
+        if(user.getSurname() != null) {
+            usuDB.setSurname(user.getSurname());
+        }
+        if(user.getBirthdate() != null) {
+            usuDB.setBirthdate(user.getBirthdate());
+        }
+        if(user.getPhone() != null) {
+            usuDB.setPhone(user.getPhone());
+        }
+        if(user.getEmail() != null) {
+            usuDB.setEmail(user.getEmail());
+        }
     }
 
 }

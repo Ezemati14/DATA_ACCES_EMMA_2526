@@ -17,5 +17,7 @@ public interface ILending extends CrudRepository<Lending, Integer> {
 
     int countByBookAndReturningdateIsNull(Book book);
 
+    boolean existsByBookAndBorrowerAndReturningdateIsNull(Book book, User borrower);
+
     Optional<Lending> findByBookAndBorrowerAndReturningdateIsNull(Book book, User borrower);
 }

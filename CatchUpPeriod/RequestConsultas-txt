@@ -37,8 +37,15 @@
 
 // Inicio de sesión
 --> POST http://localhost:8080/users/inicio-sesion
-    body = { "surname": "Johnson", "code": "A786543" }
+        body = { "surname": "Johnson", "code": "A786543" }
 
+--> PUT http://localhost:8080/users/update-user
+        body = { "name": "Ezeeeeee",
+                 "surname": "Maggio",
+                 "phone": "695808234",
+                 "email": "e@e.com",
+                 "birthdate": "1991-03-09",
+                 "code": "A787878" }
 ------------------------------------------------------ LENDING
 // Para reservar libro cuando hay libros disponibles
 --> POST lending = http://localhost:8080/lending/lend?isbn=0141189207445&userCode=A786543
@@ -47,4 +54,4 @@
 --> POST lending = http://localhost:8080/lending/lend?isbn=0141189207445&userCode=A786543&reservar=true
 
 // endpint para devolver libro pasando el isbn y el userCode
--- > http://localhost:8080/lending/return?isbn=0141189207888&userCode=S976543
+-- > http://localhost:8080/lending/return?isbn=9780199535897&userCode=A787878

@@ -36,9 +36,15 @@ public class LendingService {
         Book book = booksRepository.findById(isbn)
                 .orElseThrow(() -> new IllegalArgumentException("Libro no encontrado"));
         // 3. Comprobar si tiene sancion
+
         //Comprobamos si el usuario tiene una sancion, y si esta dentro de la fecha de sancion
         if(user.getFined() != null && user.getFined().isAfter(LocalDate.now())) {
             return "Usuario sancionado hasta " + user.getFined();
+        }
+
+        //Comprobamos si existe un libro, usuario y que libros que no fueron devueltos.
+        if(lendingRepository.existsByBookAndBorrowerAndReturningdateIsNull(book, user)) {
+            throw new IllegalArgumentException("Ya tiene este libro prestado");
         }
 
         // 4. Comprobar prestamos activos del usuario

@@ -32,6 +32,16 @@ public class UserController {
             return ResponseEntity.status(401).body("Credenciales incorrectas");
         }
     }
+    //Pasamos el usuario por el body
+    @PutMapping("/update-user")
+    public ResponseEntity<String> updateUser(@RequestBody User user){
+        try {
+            userService.updateUser(user);
+            return ResponseEntity.ok("Usuario ACTUALIZADO correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
     @PostMapping(value = "/add-xml", consumes = "application/xml")
     public ResponseEntity<String> addUser(@RequestBody UserList userList){
