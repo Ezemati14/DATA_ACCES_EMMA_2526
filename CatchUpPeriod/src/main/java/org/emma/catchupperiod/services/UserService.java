@@ -38,8 +38,7 @@ public class UserService{
 
     public User loginUser(User user) {
         //Para porder usar el orElse, en el repository tenemos que marcar el metodo como Optional.
-     return userRepository.findBySurnameAndCode(user.getSurname(), user.getCode())
-               .orElse(null);
+     return userRepository.findBySurnameAndCode(user.getSurname(), user.getCode()).orElse(null);
     }
 
     //Lo que nos llega por parametro es el usuario con los datos que vamos actualizar
@@ -48,36 +47,21 @@ public class UserService{
         //Que lo buscamos con el codigo que obtenemos del usuario que nos llega por parametro.
         User usuDB = userRepository.findById(user.getCode())
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
-
         //Funcion para acttualizar los datos, pasandole usuario de BD y el usuario que nos llega por parametro.
         actualizarDatos(user, usuDB);
         return userRepository.save(usuDB);
     }
-
+    //Transactional para si alguno tiene alguno error, que no agrege ninguno
     @Transactional
     public void saveAll(List<User> users) {
-
-        for(User user : users) {
-            if(user.getCode() == null || user.getCode().isEmpty()) {
-                throw new IllegalArgumentException("No se puede registrar el usuario si el CODIGO viene vacio");
-            }
-            if(user.getName() == null || user.getName().isEmpty()) {
-                throw new IllegalArgumentException("El NOMBRE no puede estar vacio");
-            }
-            if(user.getSurname() == null || user.getSurname().isEmpty()) {
-                throw new IllegalArgumentException("El SURNAME no puede estar vacio");
-            }
-            if(user.getPhone() == null || user.getPhone().isEmpty()) {
-                throw new IllegalArgumentException("Obligatorio que nos deje un numero de TELEFONO");
-            }
-            if(user.getEmail() == null || user.getEmail().isEmpty()) {
-                throw new IllegalArgumentException("Obligatorio que nos deje un CORREO");
-            }
-        }//cierre del for
+        validarUsuarios(users);
         userRepository.saveAll(users);
     }
 
 
+
+    //--------------- FUNCIONES PRIVADAS -----------------
+    //--------------- FUNCIONES PRIVADAS -----------------
     //--------------- FUNCIONES PRIVADAS -----------------
     private void actualizarDatos(User user, User usuDB) {
         //Obtenemos el nombre y si es diferente de null.
@@ -97,6 +81,29 @@ public class UserService{
         if(user.getEmail() != null) {
             usuDB.setEmail(user.getEmail());
         }
+    }
+    //Funcion que se le pasa la lista, y con el for recorre la lista, y comienza a validar
+    private void validarUsuarios(List<User> users) {
+        for(User user : users) {
+            if(userRepository.existsById(user.getCode())) {
+                throw new IllegalArgumentException("El usuario ya existe" + user.getCode());
+            }
+            if(user.getCode() == null || user.getCode().isEmpty()) {
+                throw new IllegalArgumentException("No se puede registrar el usuario si el CODIGO viene vacio");
+            }
+            if(user.getName() == null || user.getName().isEmpty()) {
+                throw new IllegalArgumentException("El NOMBRE no puede estar vacio");
+            }
+            if(user.getSurname() == null || user.getSurname().isEmpty()) {
+                throw new IllegalArgumentException("El SURNAME no puede estar vacio");
+            }
+            if(user.getPhone() == null || user.getPhone().isEmpty()) {
+                throw new IllegalArgumentException("Obligatorio que nos deje un numero de TELEFONO");
+            }
+            if(user.getEmail() == null || user.getEmail().isEmpty()) {
+                throw new IllegalArgumentException("Obligatorio que nos deje un CORREO");
+            }
+        }//cierre del for
     }
 
 }

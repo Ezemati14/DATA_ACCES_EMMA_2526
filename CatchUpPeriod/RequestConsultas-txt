@@ -38,7 +38,7 @@
 // Inicio de sesión
 --> POST http://localhost:8080/users/inicio-sesion
         body = { "surname": "Johnson", "code": "A786543" }
-
+//ACTUALIZAR un usuario
 --> PUT http://localhost:8080/users/update-user
         body = { "name": "Ezeeeeee",
                  "surname": "Maggio",
@@ -46,6 +46,15 @@
                  "email": "e@e.com",
                  "birthdate": "1991-03-09",
                  "code": "A787878" }
+
+//AGREGAR VARIOS usuarios pero es List
+--> POST  http://localhost:8080/users/add-user
+        body = [{ "name": "Ezeeeeee",
+                 "surname": "Maggio",
+                 "phone": "695808234",
+                 "email": "e@e.com",
+                 "birthdate": "1991-03-09",
+                 "code": "A787878" }]
 ------------------------------------------------------ LENDING
 // Para reservar libro cuando hay libros disponibles
 --> POST lending = http://localhost:8080/lending/lend?isbn=0141189207445&userCode=A786543

@@ -4,3 +4,61 @@
         public List<BookDto> getAllBooksDto() {
             return bookService.findAllDto();
         }
+
+
+--> Meotodo que devuelve todos los libros usando un DTO
+    //Devuelve una lista de libros pero sin DTO
+       /* @GetMapping
+        public List<BookDto> getAllBooks() {
+            return bookService.findAll();
+        } */
+
+
+    // SERVICE BOOKS
+     //Devuelve una lista personalizada de libros.
+         //Aca mostramos los datos que nosotros queremos mostrar.
+        /* public List<BookDto> findAll() {
+             List<Book> books = (List<Book>) booksInterface.findAll();
+             List<BookDto> result = new ArrayList<>();
+
+             for (Book book : books) {
+                 //En el constructor del bookDto, con get
+                 //le voy pasando los datos que quiero mostrar
+                 result.add(new BookDto(
+                         book.getIsbn(),
+                         book.getTitle(),
+                         book.getCopies(),
+                         book.getOutline(),
+                         book.getPublisher()
+                 ));
+             }
+             return result;
+         } */
+
+
+
+     CONSTRUCTOR BOOKDTO
+             public BookDto(String isbn, String title, Integer copies, String outline, String publisher) {
+                     this.isbn = isbn;
+                     this.title = title;
+                     this.copies = copies;
+                     this.outline = outline;
+                     this.publisher = publisher;
+                 }
+
+
+
+     BookController
+         public List<Book> getCategoryBooks(String category) {
+                 if(category == null || category.isEmpty()) {
+                     return null;
+                 }
+                 List<Book> result = booksInterface.findByCategory_Code(category);
+                 for (Book book : result) {
+                     int activos = lendingRepository.countByBookAndReturningdateIsNull(book);
+                     int disponibles = book.getCopies() - activos;
+
+                     book.setCopies(disponibles);
+                 }
+                 return result;
+             }

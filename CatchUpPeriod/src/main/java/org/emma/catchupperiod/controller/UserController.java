@@ -21,7 +21,8 @@ public class UserController {
     public List<UserDto> getAllUsers() {
         return userService.getUsers();
     }
-
+    /*  http://localhost:8080/users/inicio-sesion
+        body = { "surname": "Johnson", "code": "A786543" }   */
     @PostMapping("/inicio-sesion")
     public ResponseEntity<String> login(@RequestBody User user){
         User user1 = userService.loginUser(user);
@@ -42,11 +43,11 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-    @PostMapping(value = "/add-xml", consumes = "application/xml")
-    public ResponseEntity<String> addUser(@RequestBody UserList userList){
+    //http://localhost:8080/users/add-user
+    @PostMapping(value = "/add-user")
+    public ResponseEntity<String> addUser(@RequestBody List<User> users){
         try {
-            userService.saveAll(userList.getUsers());
+            userService.saveAll(users);
             return ResponseEntity.ok("Usuarios creados correctamente");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -54,3 +55,4 @@ public class UserController {
     }
 
 }
+

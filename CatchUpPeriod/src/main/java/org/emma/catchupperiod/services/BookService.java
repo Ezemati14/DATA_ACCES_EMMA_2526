@@ -5,6 +5,7 @@ import org.emma.catchupperiod.entities.Category;
 import org.emma.catchupperiod.entitiesDTO.BookDto;
 import org.emma.catchupperiod.repositorys.IBooks;
 import org.emma.catchupperiod.repositorys.ICategory;
+import org.emma.catchupperiod.repositorys.ILending;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,22 +20,31 @@ public class BookService {
     private IBooks booksInterface;
     @Autowired
     private ICategory categoryRepository;
+    @Autowired
+    private ILending lendingRepository;
 
-    //Devuelve una lista personalizada de libros.
-    //Aca mostramos los datos que nosotros queremos mostrar.
-    public List<BookDto> findAll() {
-        List<Book> books = (List<Book>) booksInterface.findAll();
+    //Del controller por parametro llega el LIT
+    public List<BookDto> getCategoryBooksDto(String category) {
+        //Creamos una lista
+        List<Book> listBooks;
+
+        if(category != null) {
+            //Y esa lista la rellenamos
+            //Usamos el signo _ para navegar relaciones es igual que hacer = "book.category.code"
+            listBooks = booksInterface.findByCategory_Code(category);
+        }else {
+            listBooks = (List<Book>) booksInterface.findAll();
+        }
         List<BookDto> result = new ArrayList<>();
 
-        for (Book book : books) {
-            //En el constructor del bookDto, con get
-            //le voy pasando los datos que quiero mostrar
+        for(Book book : listBooks) {
+            int activos = lendingRepository.countByBookAndReturningdateIsNull(book);
+            int disponibles = book.getCopies() - activos;
+
             result.add(new BookDto(
                     book.getIsbn(),
                     book.getTitle(),
-                    book.getCopies(),
-                    book.getOutline(),
-                    book.getPublisher()
+                    disponibles
             ));
         }
         return result;
@@ -43,23 +53,26 @@ public class BookService {
     //LLega al Service los datos del libro por el parametros
     //book vale lo que se pasa por el body en postman o bruno
     public void save( Book book){
-    //Y aca comienza con las validaciones necesarias.
+        validateBook(book);
+        Category category = categoryRepository.findById(book.getCategory().getCode())
+                .orElseThrow(() -> new IllegalArgumentException("Category no existe"));
+        // 2. Comprobamos duplicado por ISBN
+        //Con el metodo exists, buscamos por el ISBN
+        if(booksInterface.existsById(book.getIsbn())) {
+            throw new IllegalArgumentException("El ISBN ya existe");
+        }
+        book.setCategory(category);
+        booksInterface.save(book);
+    }
 
-        // 1. Validaciones del ISBN, título y número de copias
-        if(book.getIsbn() == null || book.getIsbn().isBlank()) {
-            throw new IllegalArgumentException("El ISBN no puede ser nulo o vacío");
-        }
-        if(book.getTitle() == null || book.getTitle().isBlank()) {
-            throw new IllegalArgumentException("El título no puede ser nulo o vacío");
-        }
-        if(book.getCopies() == null || book.getCopies() < 0) {
-            throw new IllegalArgumentException("Numero de copias obligatorio");
+    //LLega al Service los datos del libro por el parametros
+    //book vale lo que se pasa por el body en postman o bruno
+    public void saveRol( Book book, String rol){
+        if(rol == null || !rol.equals("library")) {
+            throw new IllegalArgumentException("No tiene permisos para agregar libro");
         }
 
-        if (book.getCategory() == null || book.getCategory().getCode() == null) {
-            throw new IllegalArgumentException("Category obligatoria");
-        }
-
+        validateBook(book);
         Category category = categoryRepository.findById(book.getCategory().getCode())
                 .orElseThrow(() -> new IllegalArgumentException("Category no existe"));
 
@@ -93,5 +106,24 @@ public class BookService {
             }
         } //cierre del for
         booksInterface.saveAll(books);
+    }
+
+    /*-----------FUNCIONES PRIVADAS----------------*/
+
+    private void validateBook(Book book) {
+        // 1. Validaciones del ISBN, título y número de copias
+        if(book.getIsbn() == null || book.getIsbn().isBlank()) {
+            throw new IllegalArgumentException("El ISBN no puede ser nulo o vacío");
+        }
+        if(book.getTitle() == null || book.getTitle().isBlank()) {
+            throw new IllegalArgumentException("El título no puede ser nulo o vacío");
+        }
+        if(book.getCopies() == null || book.getCopies() < 0) {
+            throw new IllegalArgumentException("Numero de copias obligatorio");
+        }
+
+        if (book.getCategory() == null || book.getCategory().getCode() == null) {
+            throw new IllegalArgumentException("Category obligatoria");
+        }
     }
 }

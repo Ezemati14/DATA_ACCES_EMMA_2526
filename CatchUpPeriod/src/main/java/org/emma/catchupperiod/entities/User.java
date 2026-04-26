@@ -32,6 +32,8 @@ public class User {
     @Column(name = "email", length = 100)
     private String email;
 
+    //private String rol;
+
     public String getCode() {
         return code;
     }
@@ -87,5 +89,9 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    //public String getRol() { return rol; }
+
+    //public void setRol(String rol) { this.rol = rol; }
 
 }
