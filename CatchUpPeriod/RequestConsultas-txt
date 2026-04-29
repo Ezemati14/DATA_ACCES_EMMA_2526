@@ -1,15 +1,4 @@
 --> GET bookst = http://localhost:8080/books
---> POST books = http://localhost:8080/books
-    BODY books = {
-                   "isbn": "0141189209999",
-                   "title": "Lo que el viento se llevo",
-                   "copies": 1,
-                   "outline": "",
-                   "publisher": "Penguin Books Ltd",
-                   "category": {
-                     "code": "LIT"
-                   }
-                 }
  --> POST JSON books = http://localhost:8080/books/add-books
             BODY JSON books =
                     [

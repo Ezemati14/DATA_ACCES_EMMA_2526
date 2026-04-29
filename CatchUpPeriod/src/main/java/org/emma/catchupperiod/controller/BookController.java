@@ -29,6 +29,7 @@ public class BookController {
 
     //Endpoint para agergar UN SOLO LIBRO
     //Con el request body, pasamos el libro que queremos agregar
+    //POST = http://localhost:8080/books
     @PostMapping
     //Por el book nos llega el body que agregamos por postman o bruno
     public ResponseEntity<String> addBook(@RequestBody Book book){
@@ -37,6 +38,7 @@ public class BookController {
     }
 
     //endpoint para agregar una LISTA de libros
+    //POST = http://localhost:8080/books/add-books
     @PostMapping(value = "/add-books")
     public ResponseEntity<String> addBooks(@RequestBody List<Book> books) {
         try {
@@ -52,7 +54,7 @@ public class BookController {
     /*----------------------- ROL BIBLIOTECARIO ----------------------*/
     /*----------------------- ROL BIBLIOTECARIO ----------------------*/
 
-    //http://localhost:8080/books/add-book/rol?rol=library
+    //POST = http://localhost:8080/books/add-book/rol?rol=library
     @PostMapping("/add-book/rol")
     //Pasamos el rol y por el body, el libro.
     public ResponseEntity<String> addBookRol(@RequestParam(required = false) String rol,
