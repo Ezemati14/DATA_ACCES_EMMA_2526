@@ -23,6 +23,11 @@ public class BookService {
     @Autowired
     private ILending lendingRepository;
 
+    public List<Book> getAllBooks() {
+        List<Book> listBooks = (List<Book>) booksInterface.findAll();
+        return listBooks;
+    }
+
     //Del controller por parametro llega el LIT
     public List<BookDto> getCategoryBooksDto(String category) {
         //Creamos una lista

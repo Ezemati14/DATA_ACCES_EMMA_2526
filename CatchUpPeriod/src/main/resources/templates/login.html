@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio de sesion</title>
+</head>
+<body>
+<h2>Bienvenido a biblioteca virtual</h2>
+
+<form action="/login" method="post">
+    <label>Apellido (usuario) : </label>
+    <input type="text" name="surname" required>
+
+    <label>Codgio (usuario) : </label>
+    <input type="password" name="code" required>
+
+    <button type="submit">Iniciar sesión</button>
+</form>
+
+<p th:if="${error}" th:text="${error}" style="color:red;"></p>
+</body>
+</html>

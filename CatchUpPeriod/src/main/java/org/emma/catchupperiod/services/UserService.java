@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService{
@@ -104,6 +105,20 @@ public class UserService{
                 throw new IllegalArgumentException("Obligatorio que nos deje un CORREO");
             }
         }//cierre del for
+    }
+
+
+    /************************FUNCIONES QUE USAN LOS CONTROLADORES DE THYMELEAF****************/
+    /************************FUNCIONES QUE USAN LOS CONTROLADORES DE THYMELEAF****************/
+    /************************FUNCIONES QUE USAN LOS CONTROLADORES DE THYMELEAF****************/
+
+    public Optional<User> loginUserTh(String surname, String code) {
+        return userRepository.findBySurnameAndCode(surname, code);
+    }
+
+    //SIN USO POR EL MOMENTO
+    public Optional<User> findIdTh(String code) {
+        return userRepository.findById(code);
     }
 
 }
