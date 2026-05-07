@@ -15,6 +15,8 @@ public class LendingController {
     @Autowired
     private LendingService lendingService;
 
+    //Funcion para presta un libro, por parametro pasamos isb, codeUser y reservar
+    //http://localhost:8080/lending/lend?isbn=0141189207445&userCode=A786543
     @PostMapping("/lend")
     public ResponseEntity<String> lendBook(
             @RequestParam String isbn,

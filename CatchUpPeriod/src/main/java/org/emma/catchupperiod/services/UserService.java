@@ -65,23 +65,23 @@ public class UserService{
     //--------------- FUNCIONES PRIVADAS -----------------
     //--------------- FUNCIONES PRIVADAS -----------------
     private void actualizarDatos(User user, User usuDB) {
-        //Obtenemos el nombre y si es diferente de null.
-        if(user.getName() != null) {
-            //Con set guardamos actualizamos el nombre que nos llego del body
-            usuDB.setName(user.getName());
-        }
-        if(user.getSurname() != null) {
-            usuDB.setSurname(user.getSurname());
-        }
-        if(user.getBirthdate() != null) {
-            usuDB.setBirthdate(user.getBirthdate());
-        }
-        if(user.getPhone() != null) {
-            usuDB.setPhone(user.getPhone());
-        }
-        if(user.getEmail() != null) {
-            usuDB.setEmail(user.getEmail());
-        }
+            //Obtenemos el nombre y si es diferente de null.
+            if(user.getName() != null) {
+                //Con set guardamos actualizamos el nombre que nos llego del body
+                usuDB.setName(user.getName());
+            }
+            if(user.getSurname() != null) {
+                usuDB.setSurname(user.getSurname());
+            }
+            if(user.getBirthdate() != null) {
+                usuDB.setBirthdate(user.getBirthdate());
+            }
+            if(user.getPhone() != null) {
+                usuDB.setPhone(user.getPhone());
+            }
+            if(user.getEmail() != null) {
+                usuDB.setEmail(user.getEmail());
+            }
     }
     //Funcion que se le pasa la lista, y con el for recorre la lista, y comienza a validar
     private void validarUsuarios(List<User> users) {

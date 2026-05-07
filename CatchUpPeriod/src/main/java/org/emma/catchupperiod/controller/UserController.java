@@ -21,6 +21,7 @@ public class UserController {
     public List<UserDto> getAllUsers() {
         return userService.getUsers();
     }
+
     /*  http://localhost:8080/users/inicio-sesion
         body = { "surname": "Johnson", "code": "A786543" }   */
     @PostMapping("/inicio-sesion")
@@ -33,7 +34,7 @@ public class UserController {
             return ResponseEntity.status(401).body("Credenciales incorrectas");
         }
     }
-    //Pasamos el usuario por el body
+    //Pasamos el usuario por el body para actualizar los datos de un usuario
     @PutMapping("/update-user")
     public ResponseEntity<String> updateUser(@RequestBody User user){
         try {
