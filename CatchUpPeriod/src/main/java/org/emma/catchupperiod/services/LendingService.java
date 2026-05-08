@@ -28,6 +28,29 @@ public class LendingService {
 
     private int maxLending = 3;
 
+    //Funcion para reservar un libro pasando por parametro el isbn del libro y el codigo del usuario
+    public void reserveBook(String isbn, String userCode){
+        //buscamos al usuario por el code que nos llega por parametros
+        User user = usersRepository.findById(userCode)
+                .orElseThrow(() -> new IllegalArgumentException("No existe el usuario"));
+        //buscamos el libro por isbn que se va a reservar
+        Book book = booksRepository.findById(isbn)
+                .orElseThrow(() -> new IllegalArgumentException("No existe el libro"));
+        //Comprobamos en la base de datos de reservas, si existe ese usuario y libro
+        //Asi evitamos que exista la misma persona, con el mismo libro
+       boolean existeReserva = reservationRepository.existsByBookAndBorrower(book, user);
+       //Si existe enviamos error
+       if(existeReserva){
+           throw new IllegalArgumentException("Ya tienes una reserva para este libro");
+       }
+       //Si va t0do bien, creamos la reserva, con el libro, el usuario y la fecha de hoy
+       Reservation reservation = new Reservation();
+       reservation.setBook(book);
+       reservation.setBorrower(user);
+       reservation.setDate(LocalDate.now());
+       reservationRepository.save(reservation);
+    }
+
     public String lendBook(String isbn, String userCode, Boolean reservar) {
         // 1. Buscamos usuario
         User user = usersRepository.findById(userCode)

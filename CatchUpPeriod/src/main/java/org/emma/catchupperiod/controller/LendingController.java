@@ -34,4 +34,15 @@ public class LendingController {
         String resultado = lendingService.returnBook(isbn, userCode);
         return ResponseEntity.ok(resultado);
     }
+    //EJEMPLO = http://localhost:8080/lending/reservation?isbn=0141189207888&userCode=A787878
+    @PostMapping("/reservation")
+    public ResponseEntity<String> reserveBook(@RequestParam String isbn,
+                                              @RequestParam String userCode){
+        try {
+            lendingService.reserveBook(isbn, userCode);
+            return ResponseEntity.ok("Libro Reservado");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
