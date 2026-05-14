@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface IUsers extends CrudRepository<User, String> {
 
     Optional<User> findBySurnameAndCode(String surname, String code);
+    Optional<User> findBySurname(String surname);
 
 }

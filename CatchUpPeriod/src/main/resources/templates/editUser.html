@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar datos</title>
+</head>
+<body>
+
+<h1>Editar datos del Usuario</h1>
+
+<h2>Datos del usuario</h2>
+
+<form action="/editUser/save" method="post">
+
+    <input type="text" name="name" th:value="${user.name}">
+    <input type="text" name="surname" th:value="${user.surname}">
+    <input type="text" name="email" th:value="${user.email}">
+    <input type="text" name="phone" th:value="${user.phone}">
+
+    <button type="submit">Guardar</button>
+</form>
+
+
+<a href="/logout">Cerra sesion</a>
+</body>
+</html>

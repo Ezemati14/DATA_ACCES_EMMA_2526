@@ -121,4 +121,33 @@ public class UserService{
         return userRepository.findById(code);
     }
 
+    public User findBySurname(String surname) {
+        return userRepository.findBySurname(surname)
+                .orElseThrow();
+    }
+
+    public void updateUserTh(User formUser, String surname) {
+
+        User usuDB = userRepository.findBySurname(surname)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+
+        //VALIDACIONES CON IF
+        if (formUser.getName() != null && !formUser.getName().isBlank()) {
+            usuDB.setName(formUser.getName());
+        }
+
+        if (formUser.getSurname() != null && !formUser.getSurname().isBlank()) {
+            usuDB.setSurname(formUser.getSurname());
+        }
+
+        if (formUser.getEmail() != null && !formUser.getEmail().isBlank()) {
+            usuDB.setEmail(formUser.getEmail());
+        }
+
+        if (formUser.getPhone() != null && !formUser.getPhone().isBlank()) {
+            usuDB.setPhone(formUser.getPhone());
+        }
+        userRepository.save(usuDB);
+    }
+
 }
