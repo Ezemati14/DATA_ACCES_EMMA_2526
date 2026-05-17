@@ -17,6 +17,11 @@ public class UserService{
     @Autowired
     private IUsers userRepository;
 
+    public User findUserById(String id){
+        return userRepository.findById(String.valueOf(id))
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+    }
+
     public List<UserDto> getUsers() {
         //Buscamos los usuario en la base de datos, y lo guardamos en una lista
         List<User> usuarios = (List<User>) userRepository.findAll();
@@ -59,14 +64,29 @@ public class UserService{
         userRepository.saveAll(users);
     }
 
-
+    public void validarUsuario(User user) {
+        if(user.getName() == null || user.getName().isEmpty()) {
+            //Si el nombre es null o esta vacio, lanzamos una excepcion con un mensaje
+            //con esto hacemos que vaya al catch directamente, y ejecuta el mensaje de error
+            throw new IllegalArgumentException("El NOMBRE no puede estar vacio");
+        }
+        if(user.getSurname() == null || user.getSurname().isEmpty()) {
+            throw new IllegalArgumentException("El SURNAME no puede estar vacio");
+        }
+        if(user.getPhone() == null || user.getPhone().isEmpty()) {
+            throw new IllegalArgumentException("Obligatorio que nos deje un numero de TELEFONO");
+        }
+        if(user.getEmail() == null || user.getEmail().isEmpty()) {
+            throw new IllegalArgumentException("Obligatorio que nos deje un CORREO");
+        }
+    }
 
     //--------------- FUNCIONES PRIVADAS -----------------
     //--------------- FUNCIONES PRIVADAS -----------------
     //--------------- FUNCIONES PRIVADAS -----------------
     private void actualizarDatos(User user, User usuDB) {
             //Obtenemos el nombre y si es diferente de null.
-            if(user.getName() != null) {
+            if(user.getName() != null && !user.getName().isBlank()) {
                 //Con set guardamos actualizamos el nombre que nos llego del body
                 usuDB.setName(user.getName());
             }
@@ -76,10 +96,10 @@ public class UserService{
             if(user.getBirthdate() != null) {
                 usuDB.setBirthdate(user.getBirthdate());
             }
-            if(user.getPhone() != null) {
+            if(user.getPhone() != null && !user.getPhone().isBlank()) {
                 usuDB.setPhone(user.getPhone());
             }
-            if(user.getEmail() != null) {
+            if(user.getEmail() != null && !user.getEmail().isBlank()) {
                 usuDB.setEmail(user.getEmail());
             }
     }
@@ -111,43 +131,4 @@ public class UserService{
     /************************FUNCIONES QUE USAN LOS CONTROLADORES DE THYMELEAF****************/
     /************************FUNCIONES QUE USAN LOS CONTROLADORES DE THYMELEAF****************/
     /************************FUNCIONES QUE USAN LOS CONTROLADORES DE THYMELEAF****************/
-
-    public Optional<User> loginUserTh(String surname, String code) {
-        return userRepository.findBySurnameAndCode(surname, code);
-    }
-
-    //SIN USO POR EL MOMENTO
-    public Optional<User> findIdTh(String code) {
-        return userRepository.findById(code);
-    }
-
-    public User findBySurname(String surname) {
-        return userRepository.findBySurname(surname)
-                .orElseThrow();
-    }
-
-    public void updateUserTh(User formUser, String surname) {
-
-        User usuDB = userRepository.findBySurname(surname)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
-
-        //VALIDACIONES CON IF
-        if (formUser.getName() != null && !formUser.getName().isBlank()) {
-            usuDB.setName(formUser.getName());
-        }
-
-        if (formUser.getSurname() != null && !formUser.getSurname().isBlank()) {
-            usuDB.setSurname(formUser.getSurname());
-        }
-
-        if (formUser.getEmail() != null && !formUser.getEmail().isBlank()) {
-            usuDB.setEmail(formUser.getEmail());
-        }
-
-        if (formUser.getPhone() != null && !formUser.getPhone().isBlank()) {
-            usuDB.setPhone(formUser.getPhone());
-        }
-        userRepository.save(usuDB);
-    }
-
 }

@@ -3,31 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <title>Lista de libros</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <h1>Lista de libros</h1>
+<div class="container">
+    <h1>Buscar libros por categoria</h1>
+
+    <form class="login-box" action="/books/search" method="get">
+
+        <select name="category">
+        <!-- Seleccionamos una categoria que nos llega del model = categories -->
+            <option value="">
+                Seleccione categoría
+            </option>
+
+            <option
+                    th:each="category : ${categories}"
+                    th:value="${category.code}"
+                    th:text="${category.code}">
+            </option>
+
+        </select>
+        <!--Cuando le demos al boton, va a pasar algo como esto
+         GET /books/search?category=LIT el category se rellena con lo que seleccionemso-->
+        <button type="submit">Buscar</button>
+
+    </form>
+
+    <br>
+
+    <!-- Ahora books ya es una lista que puede o no tener datos -->
+    <table class="login-box" th:if="${books != null}">
+        <tr>
+            <th>Título</th>
+            <th>Categoría</th>
+            <th>Copias disponibles</th>
+        </tr>
+        <!-- Al devolver la lista, hacemos un for para recorrer toda esa lista
+         e ir mostrando los datos que nos interesen a nosotros -->
+        <tr th:each="book : ${books}">
+            <td th:text="${book.title}"></td>
+            <td th:text="${book.category.name}"></td>
+            <td th:text="${book.copies}"></td>
+            <td>
+                <form action="/books/reserve" method="post">
+                    <input type="hidden"
+                           name="isbn"
+                           th:value="${book.isbn}">
+                    <button type="submit">
+                        Reservar
+                    </button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <p class="error" th:if="${error}" th:text="${error}"></p>
 
     <a href="/logout">Cerra sesion</a>
-    <!--<table border="1">
-        <thead>
-            <tr>
-                <th>ISBN</th>
-                <th>Titulo</th>
-                <th>Copias disponibles</th>
-                <th>Publicaciones</th>
-                <th>Category</th>
-            </tr>
-        </thead>
-        <tbody>
-        <tr th:each="book : ${books}">
-            <td th:text="${book.isbn}"></td>
-            <td th:text="${book.title}"></td>
-            <td th:text="${book.copies}"></td>
-            <td th:text="${book.publisher}"></td>
-            <td th:text="${book.category.name}"></td>
-        </tr>
-        </tbody>
-    </table>-->
-
+    <a href="/editUser">Volver a editar datos</a>
+</div>
 </body>
 </html>

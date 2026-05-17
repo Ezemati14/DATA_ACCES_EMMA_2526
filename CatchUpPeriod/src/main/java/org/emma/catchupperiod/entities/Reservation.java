@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Table(name = "reservations")
 public class Reservation {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ColumnDefault("nextval('reservations_id_seq')")
     @Column(name = "id", nullable = false)
     private Integer id;

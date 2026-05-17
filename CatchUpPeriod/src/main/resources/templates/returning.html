@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Retornar un libro</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Devolver libro</h1>
+    <!--MENSAJE DE ERROR -->
+    <p class="success" th:if="${success}" th:text="${success}"></p>
+    <!--MENSAJE DE COMPLETO -->
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+    <!-- FORMULARIO QUE RELLENAMOS CON DATOS DEL LIBRO Y USUARIO  -->
+    <form th:action="@{/library/returnBook}" method="post">
+
+        <input type="text" name="isbn" placeholder="ISBN del libro" required>
+
+        <input type="text" name="userCode" placeholder="Código usuario" required>
+
+        <button type="submit">Devolver</button>
+
+</div>
+
+</body>
+</html>

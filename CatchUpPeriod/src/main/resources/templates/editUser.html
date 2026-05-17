@@ -3,24 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Editar datos</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 
-<h1>Editar datos del Usuario</h1>
+<div class="container">
+        <h1>Editar datos del Usuario</h1>
 
-<h2>Datos del usuario</h2>
+        <h2>Datos del usuario</h2>
 
-<form action="/editUser/save" method="post">
+        <form class="login-box" action="/editUser/save" method="post">
 
-    <input type="text" name="name" th:value="${user.name}">
-    <input type="text" name="surname" th:value="${user.surname}">
-    <input type="text" name="email" th:value="${user.email}">
-    <input type="text" name="phone" th:value="${user.phone}">
+            <input type="text" name="name" th:value="${user.name}">
+            <input type="text" name="surname" th:value="${user.surname}">
+            <input type="text" name="email" th:value="${user.email}">
+            <input type="text" name="phone" th:value="${user.phone}">
 
-    <button type="submit">Guardar</button>
-</form>
+            <button type="submit">Guardar</button>
+        </form>
+
+        <p class="error" th:text="${error}"></p>
+
+        <p class="success" th:if="${success}" th:text="${success}"></p>
+
+        <a href="/books">Ver libros</a>
+        <a href="/mylendings">Ver Mis prestamos</a>
 
 
-<a href="/logout">Cerra sesion</a>
+        <a href="/logout">Cerra sesion</a>
+</div>
 </body>
 </html>

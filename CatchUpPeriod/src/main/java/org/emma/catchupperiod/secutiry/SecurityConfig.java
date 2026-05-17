@@ -27,7 +27,8 @@ public class SecurityConfig {
                         .requestMatchers("/login").permitAll()
                         //Y aca indicamos si quiere entrar a /library, tiene que tener el rol LIBRARY
                         .requestMatchers("/library/**").hasRole("LIBRARY")
-                        .requestMatchers("/editUser").hasAnyRole("USER")
+                        .requestMatchers("/editUser").hasRole("USER")
+                        .requestMatchers("/books").hasRole("USER")
                         //Y aca indicamos que para otra pagina, necesita autenticarse
                         .anyRequest().authenticated()
                 )

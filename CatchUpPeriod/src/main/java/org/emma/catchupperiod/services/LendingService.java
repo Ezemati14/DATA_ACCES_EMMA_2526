@@ -33,22 +33,49 @@ public class LendingService {
         //buscamos al usuario por el code que nos llega por parametros
         User user = usersRepository.findById(userCode)
                 .orElseThrow(() -> new IllegalArgumentException("No existe el usuario"));
+
         //buscamos el libro por isbn que se va a reservar
         Book book = booksRepository.findById(isbn)
                 .orElseThrow(() -> new IllegalArgumentException("No existe el libro"));
+
+        int prestamosActivos = lendingRepository.countByBookAndReturningdateIsNull(book);
+        int copiasDisponibles = book.getCopies() - prestamosActivos;
+
+        if(copiasDisponibles <= 0) {
+            throw new IllegalArgumentException("No hay copias disponibles para reservar");
+        }
+
         //Comprobamos en la base de datos de reservas, si existe ese usuario y libro
         //Asi evitamos que exista la misma persona, con el mismo libro
        boolean existeReserva = reservationRepository.existsByBookAndBorrower(book, user);
+
        //Si existe enviamos error
        if(existeReserva){
            throw new IllegalArgumentException("Ya tienes una reserva para este libro");
        }
+
        //Si va t0do bien, creamos la reserva, con el libro, el usuario y la fecha de hoy
        Reservation reservation = new Reservation();
        reservation.setBook(book);
        reservation.setBorrower(user);
        reservation.setDate(LocalDate.now());
+
+       //Reducimos una copia cuando reservamos el libro
+       //book.setCopies(book.getCopies() - 1);
+
        reservationRepository.save(reservation);
+    }
+
+    public List<Reservation> getAllReservations(String code) {
+        User user = usersRepository.findById(code)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+        return reservationRepository.findByBorrower(user);
+    }
+
+    public List<Lending> getAllLendings(String code) {
+        User user = usersRepository.findById(code)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+        return lendingRepository.findByBorrower(user);
     }
 
     public String lendBook(String isbn, String userCode, Boolean reservar) {

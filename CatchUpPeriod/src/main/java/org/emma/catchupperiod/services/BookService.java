@@ -27,6 +27,20 @@ public class BookService {
         List<Book> listBooks = (List<Book>) booksInterface.findAll();
         return listBooks;
     }
+    //Aca nos llega el param category que vale LIT
+    //Y empieza toda la busqueda de ese valor
+    public List<Book> buscarPorCategoria(String category){
+        //Primero validamos que no llegue vacio, ni en blank
+        if(category == null || category.isBlank()){
+            throw new IllegalArgumentException("La categoría no puede estar vacía");
+        }
+        //Cuando llega con un valor, buscamos en el repository la categoria LIT.
+        Category categoria = categoryRepository.findById(category)
+                        .orElseThrow(() -> new IllegalArgumentException("Categoría no encontrada"));
+        //Una vez encontrada la categoria, busca en la BD de books, los libros con esa categoria
+        //y devuelve una lista de libros con esa categoria
+        return booksInterface.findByCategory(categoria);
+    }
 
     //Del controller por parametro llega el LIT
     public List<BookDto> getCategoryBooksDto(String category) {
@@ -117,8 +131,9 @@ public class BookService {
 
     private void validateBook(Book book) {
         // 1. Validaciones del ISBN, título y número de copias
-        if(book.getIsbn() == null || book.getIsbn().isBlank()) {
-            throw new IllegalArgumentException("El ISBN no puede ser nulo o vacío");
+        if(book.getIsbn() == null || book.getIsbn().isBlank()
+                || !book.getIsbn().matches("\\d{13}")) {
+            throw new IllegalArgumentException("El ISBN esta nulo o tiene menos de 13 numeros");
         }
         if(book.getTitle() == null || book.getTitle().isBlank()) {
             throw new IllegalArgumentException("El título no puede ser nulo o vacío");

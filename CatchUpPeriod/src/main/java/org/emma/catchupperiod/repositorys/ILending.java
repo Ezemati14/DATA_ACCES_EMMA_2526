@@ -20,4 +20,6 @@ public interface ILending extends CrudRepository<Lending, Integer> {
     boolean existsByBookAndBorrowerAndReturningdateIsNull(Book book, User borrower);
 
     Optional<Lending> findByBookAndBorrowerAndReturningdateIsNull(Book book, User borrower);
+
+    List<Lending> findByBorrower(User user);
 }

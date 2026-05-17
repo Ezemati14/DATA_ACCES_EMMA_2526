@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo prestamo</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Crear préstamo</h1>
+
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+
+    <p class="success" th:if="${success}" th:text="${success}"></p>
+
+    <form th:action="@{/library/lending}" method="post">
+
+        <label>Libro:</label>
+
+        <select name="isbn">
+
+            <option value="">Seleccione libro</option>
+            <!-- Aca usamos th porq los datos vienen del controlador
+             Enviamos el valor isbn, pero mostramos el titulo de ese libro-->
+            <option th:each="book : ${books}" th:value="${book.isbn}" th:text="${book.title}"></option>
+        </select>
+
+        <label>Código usuario:</label>
+        <!-- No usamos TH porque es un campo fijo
+                 directamente escribmos en el input, y enviamos
+                  osea que los datos no vienen de ningun lado-->
+        <input type="text" name="userCode" placeholder="Código usuario">
+        <button type="submit">Crear préstamo</button>
+
+    </form>
+</div>
+
+<a href="/library/lend">Volver a pagina agrega libro</a>
+<a href="/logout">Cerra sesion</a>
+</body>
+</html>
