@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<books>
+
+    <book>
+        <isbn>9780141189209</isbn>
+        <title>The Great Gatsby</title>
+        <copies>5</copies>
+
+        <category>
+            <code>LIT</code>
+        </category>
+
+    </book>
+
+    <book>
+        <isbn>9780199535999</isbn>
+        <title>Pride and Prejudice</title>
+        <copies>3</copies>
+
+        <category>
+            <code>LIT</code>
+        </category>
+
+    </book>
+
+</books>

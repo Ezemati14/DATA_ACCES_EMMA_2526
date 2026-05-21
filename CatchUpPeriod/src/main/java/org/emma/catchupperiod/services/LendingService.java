@@ -154,11 +154,10 @@ public class LendingService {
 
         Book libro = booksRepository.findById(isbn)
                 .orElseThrow(() -> new IllegalArgumentException("Libro no encontrado"));
-
         //Usamos este metodo para buscar ese libro, usuario, y que el returningDate sea null
         //Asi sabemos que ese libro no se devolvio.
         Lending prestamo = lendingRepository.findByBookAndBorrowerAndReturningdateIsNull(libro, usuario)
-                .orElseThrow(() -> new IllegalArgumentException("Prestamo no encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException("No existe un préstamo activo para devolver"));
 
         //Agarramos la fecha de hoy
         LocalDate today = LocalDate.now();

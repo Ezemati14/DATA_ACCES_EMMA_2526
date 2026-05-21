@@ -1,0 +1,9 @@
+Main ->  lee args
+
+CommandLineParser -> entiende comando
+
+LendingClientService -> lógica préstamo
+
+RestApiConnection -> habla con API
+
+API -> responde

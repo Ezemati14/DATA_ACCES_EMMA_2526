@@ -3,6 +3,7 @@ package org.emma.catchupperiod.secutiry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -24,6 +25,7 @@ public class SecurityConfig {
                         .requestMatchers("/login").permitAll()
                         //Y aca indicamos si quiere entrar a /library, tiene que tener el rol LIBRARY
                         .requestMatchers("/library/**").hasRole("LIBRARY")
+                        .requestMatchers("/lending/**").hasRole("LIBRARY")
                         .requestMatchers("/editUser").hasRole("USER")
                         .requestMatchers("/books").hasRole("USER")
                         //Y aca indicamos que para otra pagina, necesita autenticarse
@@ -32,6 +34,7 @@ public class SecurityConfig {
                 //Esto es una configuracion de Spring Security para indicarle que queremos utilizar un formulario de login
                 //vieine de la clas httpSecurity
                 .userDetailsService(customUserDetailsService)
+                .httpBasic(Customizer.withDefaults())
                 .formLogin(form -> form
                         //Aca decimos que la pagina principal es login
                         .loginPage("/login")

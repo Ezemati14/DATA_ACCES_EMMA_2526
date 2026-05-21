@@ -22,8 +22,12 @@ public class LendingController {
             @RequestParam String isbn,
             @RequestParam String userCode,
             @RequestParam(required = false) Boolean reservar){
-        String resultado = lendingService.lendBook(isbn, userCode, reservar);
-        return ResponseEntity.ok(resultado);
+        try {
+            String resultado = lendingService.lendBook(isbn, userCode, reservar);
+            return ResponseEntity.ok(resultado);
+        }catch(IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body( e.getMessage());
+        }
     }
 
     //Pasamos por parametros el isbn del libro, y el codigo del usuario
