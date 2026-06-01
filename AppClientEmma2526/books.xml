@@ -3,8 +3,8 @@
 <books>
 
     <book>
-        <isbn>9780141189209</isbn>
-        <title>The Great Gatsby</title>
+        <isbn>9780141189999</isbn>
+        <title>Marvel</title>
         <copies>5</copies>
 
         <category>
@@ -14,8 +14,8 @@
     </book>
 
     <book>
-        <isbn>9780199535999</isbn>
-        <title>Pride and Prejudice</title>
+        <isbn>9780199535977</isbn>
+        <title>Liga justicia</title>
         <copies>3</copies>
 
         <category>
