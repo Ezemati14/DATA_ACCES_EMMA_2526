@@ -1,7 +1,6 @@
 package org.emma.catchupperiod.controller;
 
 import org.emma.catchupperiod.entities.User;
-import org.emma.catchupperiod.entities.UserList;
 import org.emma.catchupperiod.entitiesDTO.UserDto;
 import org.emma.catchupperiod.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +53,5 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
 }
 

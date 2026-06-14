@@ -1,12 +1,13 @@
 package org.emma.catchupperiod.controller;
 
+import org.emma.catchupperiod.entitiesDTO.LendingDTO;
+import org.emma.catchupperiod.entitiesDTO.LendingInfoDTO;
 import org.emma.catchupperiod.services.LendingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/lending")
@@ -30,6 +31,12 @@ public class LendingController {
         }
     }
 
+    @GetMapping("/lending-info")
+    public LendingInfoDTO getLendingInfo(@RequestParam String isbn, @RequestParam String userCode) {
+        return lendingService.getLendingInfo(isbn, userCode);
+
+    }
+
     //Pasamos por parametros el isbn del libro, y el codigo del usuario
     //EJEMPLO = http://localhost:8080/lending/return?isbn=0141189207888&userCode=S976543
     @PostMapping("/return")
@@ -48,5 +55,13 @@ public class LendingController {
         }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    //Esto muestra una lista con todos los prestamos activos digamos los que no devolvieron
+    // el libro todavia, eso lo sabemos por el returningDate que es null
+    //https://localhost:8080/lending/active
+    @GetMapping("/active")
+    public ResponseEntity<List<LendingDTO>> getActiveBook(){
+        return ResponseEntity.ok(lendingService.getActiveLendings());
     }
 }

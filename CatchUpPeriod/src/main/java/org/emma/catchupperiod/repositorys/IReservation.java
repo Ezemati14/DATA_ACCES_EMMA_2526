@@ -18,4 +18,6 @@ public interface IReservation extends CrudRepository<Reservation, Integer> {
 
     List<Reservation> findByBorrower(User user);
 
+    Reservation findByBookAndBorrower(Book book, User borrower);
+
 }

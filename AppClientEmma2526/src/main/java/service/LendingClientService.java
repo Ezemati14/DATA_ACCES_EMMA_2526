@@ -19,4 +19,12 @@ public class LendingClientService {
         String parametros = "isbn=" + isbn + "&userCode=" + userCode;
         return connection.sendPost("/lending/return", parametros);
     }
+
+    public HttpResponse getActiveLendings() {
+        return connection.sendGet("/pretamos-activos");
+    }
+    public HttpResponse getLendingInfo(String isbn, String userCode) {
+        String parametros = "isbn=" + isbn + "&userCode=" + userCode;
+        return connection.sendGet("/lending/lending-info?" + parametros);
+    }
 }

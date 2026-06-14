@@ -2,6 +2,7 @@ package org.emma.catchupperiod.services;
 
 import org.emma.catchupperiod.entities.User;
 import org.emma.catchupperiod.entitiesDTO.UserDto;
+import org.emma.catchupperiod.repositorys.ILending;
 import org.emma.catchupperiod.repositorys.IUsers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,8 @@ public class UserService{
 
     @Autowired
     private IUsers userRepository;
+    @Autowired
+    private ILending lendingRepository;
 
     public User findUserById(String id){
         return userRepository.findById(String.valueOf(id))
@@ -64,7 +67,41 @@ public class UserService{
         userRepository.saveAll(users);
     }
 
+    public void save(User user) {
+        validarUsuario(user);
+        userRepository.save(user);
+    }
+
+    public void deleteUser(String userCode) {
+        User user = userRepository.findById(userCode)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+        Boolean tienePrestamos = lendingRepository.existsByBorrowerAndReturningdateIsNull(user);
+        Boolean tieneHistorialPrestamo = lendingRepository.existsByBorrower(user);
+
+        if(tienePrestamos) {
+            throw new IllegalArgumentException("No se puede eliminar el usuario, tiene prestamos activos");
+        }
+        if(tieneHistorialPrestamo) {
+            throw new IllegalArgumentException("No se puede borrar el usuario porque tiene historial de préstamos");
+        }
+        userRepository.delete(user);
+    }
+
+    public List<User> findAll() {
+        return (List<User>) userRepository.findAll();
+    }
+
     public void validarUsuario(User user) {
+        if(user.getCode() == null || user.getCode().isEmpty()) {
+            //Si el nombre es null o esta vacio, lanzamos una excepcion con un mensaje
+            //con esto hacemos que vaya al catch directamente, y ejecuta el mensaje de error
+            throw new IllegalArgumentException("El DNI no puede estar vacio");
+        }
+        if (!user.getCode().matches("^[A-Z][0-9]{6}$")) {
+            throw new IllegalArgumentException(
+                    "Formato erroneo. Es letra Mayuscula + 6 numeros = (Ej: A123456)"
+            );
+        }
         if(user.getName() == null || user.getName().isEmpty()) {
             //Si el nombre es null o esta vacio, lanzamos una excepcion con un mensaje
             //con esto hacemos que vaya al catch directamente, y ejecuta el mensaje de error
@@ -78,6 +115,9 @@ public class UserService{
         }
         if(user.getEmail() == null || user.getEmail().isEmpty()) {
             throw new IllegalArgumentException("Obligatorio que nos deje un CORREO");
+        }
+        if(user.getBirthdate() == null) {
+            throw new IllegalArgumentException("Seleecionar una fecha de cumpleaños");
         }
     }
 

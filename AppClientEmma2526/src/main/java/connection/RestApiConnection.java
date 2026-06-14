@@ -84,6 +84,50 @@ public class RestApiConnection {
         }
     }
 
+    public HttpResponse sendGet(String endpoint) {
+        try {
+            URL url = new URL(URL_BASE + endpoint);
+            System.out.println(url);
+
+            HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
+
+            conexion.setRequestMethod("GET");
+            conexion.setInstanceFollowRedirects(false);
+            conexion.setRequestProperty("Accept", "application/json, text/plain, */*");
+
+            String credenciales = USUARIO + ":" + PASSWORD;
+            String credencialesBase64 = Base64.getEncoder().encodeToString(credenciales.getBytes());
+
+            conexion.setRequestProperty("Authorization", "Basic " + credencialesBase64);
+
+            conexion.setRequestProperty(
+                    "X-Requested-With",
+                    "XMLHttpRequest"
+            );
+
+            int status = conexion.getResponseCode();
+            InputStream stream;
+
+            if (status >= 400) { stream = conexion.getErrorStream(); }
+            else { stream = conexion.getInputStream(); }
+
+            StringBuilder respuesta = new StringBuilder();
+
+            if (stream != null) {
+                BufferedReader lector = new BufferedReader(new InputStreamReader(stream));
+
+                String linea;
+                while ((linea = lector.readLine()) != null) {
+                    respuesta.append(linea);
+                }
+                lector.close();
+            }
+            return new HttpResponse(status, respuesta.toString());
+        } catch (Exception e) {
+            return new HttpResponse(-1,"Error: " + e.getMessage());
+        }
+    }
+
     //Manda un POST con cuerpo JSON. Lo usamos para enviar libros a la API.
     public HttpResponse sendPostJson(String endpoint, String jsonBody) {
 

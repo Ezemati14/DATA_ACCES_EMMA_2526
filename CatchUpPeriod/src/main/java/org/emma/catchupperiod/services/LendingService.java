@@ -4,6 +4,9 @@ import org.emma.catchupperiod.entities.Book;
 import org.emma.catchupperiod.entities.Lending;
 import org.emma.catchupperiod.entities.Reservation;
 import org.emma.catchupperiod.entities.User;
+import org.emma.catchupperiod.entitiesDTO.LendingDTO;
+import org.emma.catchupperiod.entitiesDTO.LendingInfoDTO;
+import org.emma.catchupperiod.entitiesDTO.UserDetailsDto;
 import org.emma.catchupperiod.repositorys.IBooks;
 import org.emma.catchupperiod.repositorys.ILending;
 import org.emma.catchupperiod.repositorys.IReservation;
@@ -12,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LendingService {
@@ -185,5 +190,87 @@ public class LendingService {
                     + reservado.getName();
         }
         return mensaje;
+    }
+
+    public List<LendingDTO> getActiveLendings() {
+        //Buscamos todos los prestamos activos, que el returningDate sea null
+        //todavia no se devolvio el libro
+        List<Lending> lendings = lendingRepository.findByReturningdateIsNull();
+        //Lista que devolvemos
+        List<LendingDTO> resultadoLendings = new ArrayList<>();
+
+        //Aca recorremos la lista donde los prestamos sean activos
+        for(Lending lending : lendings) {
+            //El dto ahora no viene vacio
+            //y se va llenando mientras recorre la lista de prestamos activos
+            LendingDTO dto = new LendingDTO();
+            //Aca queremos setear el isbn del objeto dto
+            //y con el get, llegamos hasta el dato del libro que es el isbn
+            //y luego lo guardamos en el dto con el set
+            dto.setIsbnDto(lending.getBook().getIsbn()); //dto.setIsbn("9780199535897");
+            dto.setTitleDto(lending.getBook().getTitle()); //dto.setTitle("The Great Gatsby");
+            dto.setUserNameDto(lending.getBorrower().getName()); //dto.setUserName("John Doe");
+            dto.setUserCodeDto(lending.getBorrower().getCode());
+            //Obtenemos la fecha en la que se presto el libro
+            //y lo guardamos en el dto
+            dto.setLendingDateDto(lending.getLendingdate()); //dto.setLendingDate(LocalDate.of(2023, 10, 1));
+            //Aca le agregamos 7 dias a la fecha que obtenemos del prestamo
+            LocalDate dueDate = lending.getLendingdate().plusDays(7); //dto.setDueDate(LocalDate.of(2023, 10, 8));
+            //Y guardamos esa fecha en el dto
+            dto.setDueDateDto(dueDate);
+            //Obtenemos la fecha de hoy, con LocalDate.now(). y pregutamos si se paso de la fehca limite
+            //devuelve tru o false.
+            dto.setDelayedDto(LocalDate.now().isAfter(dueDate));
+
+            resultadoLendings.add(dto);
+        }
+        return resultadoLendings;
+    }
+
+    public List<UserDetailsDto> getUserDetails(String userCode){
+        //Primero buscamos al usuario con el que queremos trabajar
+        User user = usersRepository.findById(userCode)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+        System.out.println("Usuario: " + userCode);
+        //Una vez encontrado el usario, buscamos en la tabla lendinsg ese Usuario
+        List<Lending> lendings = lendingRepository.findByBorrower_Code(userCode);
+        System.out.println("Cantidad de préstamos: " + lendings.size());
+        //Creamos una lista en donde se va a guardar ese usuario
+        List<UserDetailsDto> resultado = new ArrayList<>();
+        //Recorremos el lendings que encontramos, y vamos guardando esos datos
+        //en el dto que creamos dentro del for, y luego lo guardamos en la lista resultado, que es la que devolvemos
+        for(Lending lending : lendings) {
+            UserDetailsDto dto = new UserDetailsDto();
+            dto.setUserCodeDto(user.getCode());
+            dto.setUserNameDto(user.getName());
+            dto.setUserEmailDto(user.getEmail());
+            dto.setIsbnDto(lending.getBook().getIsbn());
+            dto.setBookTitleDto(lending.getBook().getTitle());
+            dto.setRetturningDateDto(lending.getReturningdate());
+            resultado.add(dto);
+        }
+        return resultado;
+    }
+
+    public LendingInfoDTO getLendingInfo(String isbn, String userCode) {
+        Book book = booksRepository.findById(isbn)
+                .orElseThrow(() -> new IllegalArgumentException("Libro no encontrado"));
+        User user = usersRepository.findById(userCode)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+        Optional<Lending> lending = lendingRepository.findByBookAndBorrowerAndReturningdateIsNull(book, user);
+
+        System.out.println("ISBN: " + book.getIsbn());
+        System.out.println("USER: " + user.getCode());
+        System.out.println("LENDING: " + lending);
+
+        if(lending.isEmpty()) {
+            throw new IllegalArgumentException("No existe préstamo activo");
+        }
+        LendingInfoDTO dto = new LendingInfoDTO();
+        dto.setLendingId(lending.get().getId());
+        dto.setUserCode(lending.get().getBorrower().getCode());
+        dto.setIsbn(lending.get().getBook().getIsbn());
+        dto.setLendingDate(lending.get().getLendingdate());
+        return dto;
     }
 }

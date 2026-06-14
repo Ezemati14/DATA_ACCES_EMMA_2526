@@ -15,18 +15,14 @@ public class BookClientService {
         return connection.sendPostJson("/books/add-books", json);
     }
 
-    private String convertirJson(
-            List<Book> books){
+    private String convertirJson( List<Book> books){
 
-        StringBuilder json =
-                new StringBuilder();
-
+        StringBuilder json = new StringBuilder();
         json.append("[");
 
         for(int i=0;i<books.size();i++){
 
             Book b=books.get(i);
-
             json.append("{");
 
             json.append("\"isbn\":\"")

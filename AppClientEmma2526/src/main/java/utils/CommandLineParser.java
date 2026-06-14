@@ -4,8 +4,8 @@ import connection.HttpResponse;
 import model.Book;
 import service.BookClientService;
 import service.LendingClientService;
-
-import javax.sql.rowset.spi.XmlReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -53,11 +53,14 @@ public class CommandLineParser {
                 System.out.println( "Código: "+ respuestaAddBook.getStatus());
                 System.out.println( respuestaAddBook.getBody() );
                 break;
+            case "-t":
+            case "--txt":
+                exportarPrestamosActivos();
+                break;
             default:
                 System.out.println("Comando desconocido");
         }
     }
-
     //Funcion para prestar un libro, y le pasamos lo que escribimos por consola
     private void prestarLibro(String[] args) {
         //Si son menos de 3, es que no se escribio tod0 lo necesario.
@@ -69,6 +72,11 @@ public class CommandLineParser {
         //el isbn del libro y el codigo del usuario
         String isbn = args[1];
         String userCode = args[2];
+        boolean exportar = false;
+
+        if(args.length >= 4 && args[3].equals("-w")) {
+            exportar = true;
+        }
 
         //Primer intento: prestar sin reservar
         HttpResponse respuesta = lendingService.lendBook(isbn, userCode, false);
@@ -92,5 +100,30 @@ public class CommandLineParser {
                 System.out.println("Reserva cancelada");
             }
         }
+        if(exportar) {
+            HttpResponse infoPrestamo = lendingService.getLendingInfo(isbn, userCode);
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter("prestamosInfo.txt"));
+                writer.write(infoPrestamo.getBody());
+                writer.close();
+                System.out.println("Archivo prestamo.txt creado");
+            }catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
     }
+
+    private void exportarPrestamosActivos() {
+        HttpResponse respuesta = lendingService.getActiveLendings();
+
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("prestamos.txt"));
+            writer.write(respuesta.getBody());
+            writer.close();
+            System.out.println("Archivo prestamos.txt creado");
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
 }
