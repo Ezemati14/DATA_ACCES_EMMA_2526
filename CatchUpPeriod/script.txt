@@ -38,7 +38,7 @@ CREATE TABLE public.books (
 -- Name: categories; Type: TABLE; Schema: public
 --
 
-CREATE TABLE pucategories (
+CREATE TABLE categories (
     code character varying(8) NOT NULL,
     name character varying(60) NOT NULL
 );
