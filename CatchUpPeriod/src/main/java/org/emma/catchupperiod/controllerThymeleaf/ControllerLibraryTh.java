@@ -189,7 +189,7 @@ public class ControllerLibraryTh {
     public String lendingsByYearPage() {
         return "lendingsByYear";
     }
-
+    //CAMBIO
     //Funcion para buscar los lendings por fecha, pasandole el año solamente
     @PostMapping("/library/lendingsByYear")
     public String getLendingsByYear(@RequestParam Integer from, @RequestParam Integer to
