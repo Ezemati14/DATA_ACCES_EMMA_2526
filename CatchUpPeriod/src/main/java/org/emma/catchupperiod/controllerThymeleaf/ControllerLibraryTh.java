@@ -188,17 +188,4 @@ public class ControllerLibraryTh {
         }
         return "cancelReservation";
     }
-
-    @GetMapping("/library/lendingsByYear")
-    public String lendingsByYearPage() {
-        return "lendingsByYear";
-    }
-    //CAMBIO
-    //Funcion para buscar los lendings por fecha, pasandole el año solamente
-    @PostMapping("/library/lendingsByYear")
-    public String getLendingsByYear(@RequestParam Integer from, @RequestParam Integer to
-            ,Model model) {
-        model.addAttribute("lendings", lendingService.obtenerPorAño(from, to));
-        return "lendingsByYear";
-    }
 }

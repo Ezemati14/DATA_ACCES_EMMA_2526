@@ -4,7 +4,7 @@ import org.emma.catchupperiod.entities.Book;
 import org.emma.catchupperiod.entities.Lending;
 import org.emma.catchupperiod.entities.Reservation;
 import org.emma.catchupperiod.entities.User;
-import org.emma.catchupperiod.entitiesDTO.LendingAñoDto;
+
 import org.emma.catchupperiod.entitiesDTO.LendingDTO;
 import org.emma.catchupperiod.entitiesDTO.LendingInfoDTO;
 import org.emma.catchupperiod.entitiesDTO.UserDetailsDto;
@@ -221,6 +221,7 @@ public class LendingService {
             dto.setDueDateDto(dueDate);
             //Obtenemos la fecha de hoy, con LocalDate.now(). y pregutamos si se paso de la fehca limite
             //devuelve tru o false.
+            //Al estar dentro de la fecha, nos va a mostrar false, si se pasa de la fecha, pasa a true
             dto.setDelayedDto(LocalDate.now().isAfter(dueDate));
 
             resultadoLendings.add(dto);
@@ -253,30 +254,7 @@ public class LendingService {
         return resultado;
     }
 
-    public List<LendingAñoDto> obtenerPorAño(Integer yearFrom, Integer yearTo) {
-        LocalDate desde = LocalDate.of(yearFrom, 1, 1);
-        LocalDate hasta = LocalDate.of(yearTo, 12, 31);
 
-        List<Lending> lendings = lendingRepository.findByLendingdateBetween(desde, hasta);
-        List<LendingAñoDto> resultado = new ArrayList<>();
-
-        for(Lending lending : lendings) {
-
-            LendingAñoDto dto = new LendingAñoDto();
-
-            dto.setIsbn(lending.getBook().getIsbn());
-            dto.setUserCode(lending.getBorrower().getCode());
-            dto.setLendingDate(lending.getLendingdate());
-            dto.setReturningDate(lending.getReturningdate());
-
-            System.out.println(lending.getBook().getIsbn());
-            System.out.println(lending.getReturningdate());
-            System.out.println(lending.getLendingdate());
-
-            resultado.add(dto);
-        }
-        return resultado;
-    }
 
     //--------------------- FUNCIONES PARA APLICACION CLIENTE -----------------------------
 

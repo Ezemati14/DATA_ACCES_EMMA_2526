@@ -16,9 +16,7 @@ public class LendingInfoDTO {
         return isbnDto;
     }
 
-    public String getUserCode() {
-        return userCodeDto;
-    }
+    public String getUserCode() { return userCodeDto; }
 
     public LocalDate getLendingDate() {
         return lendingDateDto;
