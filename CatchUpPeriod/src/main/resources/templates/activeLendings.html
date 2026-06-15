@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Préstamos activos</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+
+    <h1>Préstamos activos</h1>
+
+    <table class="login-box">
+
+        <tr>
+            <th>ISBN</th>
+            <th>Título</th>
+            <th>Código Usuario</th>
+            <th>Nombre Usuario</th>
+            <th>Fecha Préstamo</th>
+            <th>Fecha Límite</th>
+            <th>Retrasado</th>
+        </tr>
+
+        <tr th:each="lending : ${lendings}">
+            <td th:text="${lending.isbnDto}"></td>
+            <td th:text="${lending.titleDto}"></td>
+            <td th:text="${lending.userCodeDto}"></td>
+            <td th:text="${lending.userNameDto}"></td>
+            <td th:text="${lending.lendingDateDto}"></td>
+            <td th:text="${lending.dueDateDto}"></td>
+            <td th:text="${lending.delayedDto}"></td>
+        </tr>
+
+    </table>
+
+    <br>
+
+    <a href="/library/lend">Volver a pagina agrega libro</a><br>
+    <a href="/library/returning">Ir a pagina de devolver un libro</a><br>
+    <a href="/library/lendingsByYear">BUSCAR POR AÑO </a>   <br><br>
+    <a href="/logout">Cerra sesion</a>
+
+</div>
+
+
+</body>
+</html>

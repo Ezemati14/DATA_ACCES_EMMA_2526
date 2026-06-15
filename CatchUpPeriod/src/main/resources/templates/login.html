@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio de sesion</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+
+<h2>Bienvenido a biblioteca virtual</h2>
+<!-- Cuando se le da, se hace un envio a /login-->
+<form class="login-box" action="/login" method="post">
+    <label>Apellido (usuario) : </label>
+    <input type="text" name="surname" required>
+
+    <label>Codgio (usuario) : </label>
+    <input type="password" name="code" required>
+
+    <button type="submit">Iniciar sesión</button>
+</form>
+<!-- Si el parametro error existe, se muestra el mensaje de error -->
+<!-- Con esto no se necesita nada mas, spring security lo maneja solo -->
+<p class="error" th:if="${param.error}">Usuario incorrecto</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Detalles Usuario</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<h1>Detalles del usuario</h1>
+
+<div class="container">
+        <table class="login-box">
+            <tr>
+                <th>DNI</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>ISBN</th>
+                <th>Libro</th>
+                <th>Fecha devolución</th>
+            </tr>
+
+            <tr th:each="detail : ${details}">
+                <td th:text="${detail.userCodeDto}"></td>
+                <td th:text="${detail.userNameDto}"></td>
+                <td th:text="${detail.userEmailDto}"></td>
+                <td th:text="${detail.isbnDto}"></td>
+                <td th:text="${detail.bookTitleDto}"></td>
+                <td th:text="${detail.retturningDateDto}"></td>
+            </tr>
+
+        </table>
+</div>
+
+
+<a href="/library/users">Lista Usuario</a><br>
+<a href="/logout">Cerra sesion</a>
+
+</body>
+</html>

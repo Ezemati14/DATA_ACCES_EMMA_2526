@@ -1,0 +1,10 @@
+findById(id) -> Busca por un id
+findAll() -> Busca todos los registros
+save(entity) -> Guarda un nuevo registro o actualiza uno existente
+deleteById(id) -> Elimina un registro por su id
+delete(entity) -> Elimina un registro específico
+existsById(id) -> Verifica si un registro existe por su id
+findByName(name) -> Busca por un nombre específico
+findByBookAndBorrower(book, borrower) -> Busca por un libro y un prestatario específicos
+findByReturningDateIsNull() -> Busca registros donde la fecha de devolución es nula
+findByBookOrderByDateAsc(book) -> Busca por un libro y ordena por fecha de forma ascendente

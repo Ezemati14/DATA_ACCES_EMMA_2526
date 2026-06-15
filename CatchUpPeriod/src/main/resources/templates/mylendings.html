@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <h2>Reservas</h2>
+            <table class="login-box">
+                <tr>
+                    <th>Libro</th>
+                    <th>Datos</th>
+                </tr>
+
+                <tr th:each="reserver : ${reservations}">
+                    <td th:text="${reserver.book.title}"></td>
+                    <td th:text="${reserver.date}"></td>
+                </tr>
+            </table>
+
+        <h2>Prestamos</h2>
+
+            <table class="login-box">
+                <tr>
+                    <th>Libro</th>
+                    <th>Fecha</th>
+                </tr>
+
+                <tr th:each="lend : ${lendings}">
+                    <td th:text="${lend.book.title}"></td>
+                    <td th:text="${lend.lendingdate}"></td>
+                </tr>
+            </table>
+
+        <p class="error" th:if="${error}" th:text="${error}"></p>
+        <p class="success" th:if="${success}" th:text="${success}"></p>
+
+        <a href="/logout">Cerra sesion</a><br>
+        <a href="/editUser">Ir a editar datos</a><br>
+        <a href="/library/cancelReservation">CANCELAR RESERVA</a><br>
+        <a href="/books">Ir a ver libros</a>
+</div>
+</body>
+</html>

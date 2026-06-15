@@ -1,0 +1,67 @@
+// Enter PEM pass phrase: admin
+//Country Name (2 letter code) [AU] : ad
+// Introduzca la contraseña de almacén de claves de destino : admin12
+//Introduzca la contraseña de almacén de claves de destino: admin12
+//Volver a escribir la contraseña nueva: admin12
+
+
+//https://localhost:8080/login
+
+
+
+
+--> GET bookst = http://localhost:8080/books
+ --> POST JSON books = http://localhost:8080/books/add-books
+            BODY JSON books =
+                    [
+                      {
+                        "isbn": "111",
+                        "title": "Libro 1",
+                        "copies": 2,
+                        "publisher": "Test",
+                        "category": {
+                          "code": "LIT"
+                        }
+                      },
+                      {
+                        "isbn": "222",
+                        "title": "Libro 2",
+                        "copies": 3,
+                        "publisher": "Test",
+                        "category": {
+                          "code": "LIT"
+                        }
+                      }
+                    ]
+------------------------------------------------------ USERS
+--> GET users = http://localhost:8080/users
+
+// Inicio de sesión
+--> POST http://localhost:8080/users/inicio-sesion
+        body = { "surname": "Johnson", "code": "A786543" }
+//ACTUALIZAR un usuario
+--> PUT http://localhost:8080/users/update-user
+        body = { "name": "Ezeeeeee",
+                 "surname": "Maggio",
+                 "phone": "695808234",
+                 "email": "e@e.com",
+                 "birthdate": "1991-03-09",
+                 "code": "A787878" }
+
+//AGREGAR VARIOS usuarios pero es List
+--> POST  http://localhost:8080/users/add-user
+        body = [{ "name": "Ezeeeeee",
+                 "surname": "Maggio",
+                 "phone": "695808234",
+                 "email": "e@e.com",
+                 "birthdate": "1991-03-09",
+                 "code": "A787878" }]
+------------------------------------------------------ LENDING
+// Para reservar libro cuando hay libros disponibles
+--> POST lending = http://localhost:8080/lending/lend?isbn=0141189207445&userCode=A786543
+
+// Para reservar libro cuando no hay libros disponibles, y se reserva
+--> POST lending = http://localhost:8080/lending/lend?isbn=0141189207445&userCode=A786543&reservar=true
+
+// endpint para devolver libro pasando el isbn y el userCode
+-- > http://localhost:8080/lending/return?isbn=9780199535897&userCode=A787878

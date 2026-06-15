@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cancelar Reserva "library"</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="container">
+  <h2>Cancelar reserva</h2>
+
+  <form th:action="@{/library/cancelReservation}" method="post">
+    <label>ISBN:</label>
+    <input type="text" name="isbn">
+    <br><br>
+
+    <label>Código usuario:</label>
+    <input type="text" name="userCode">
+    <br><br>
+    <!-- Este boton se conecta con la  @PostMapping("/library/cancelReservation")
+     Y le paso por el inpunt los datos que estan en el name-->
+    <button type="submit">Cancelar reserva</button>
+  </form>
+
+  <p th:if="${mensaje}" th:text="${mensaje}"></p>
+
+</div>
+
+<a href="/library/lending">Ir a pagina de crear prestamo</a><br>
+<a href="/library/returning">Ir a pagina de devolver un libro</a><br>
+<a href="/library/createUser">Crear un Usuario</a><br>
+<a href="/library/lendingsByYear">BUSCAR POR AÑO </a>   <br><br>
+<a href="/library/users">Lista Usuario</a><br>
+<a href="/library/active-lendings">Ver préstamos activos</a><br>
+<a href="/logout">Cerra sesion</a>
+</body>
+</html>

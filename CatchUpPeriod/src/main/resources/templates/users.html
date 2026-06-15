@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Usuarios</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<h1>Listado de usuarios</h1>
+
+<p th:if="${success}" th:text="${success}" style="color:green;"></p>
+<p th:if="${error}" th:text="${error}" style="color:red;"></p>
+
+<div class="container">
+  <table class="login-box">
+
+    <tr>
+      <th>Código</th>
+      <th>Nombre</th>
+      <th>Email</th>
+      <th>Eliminar</th>
+      <th>Detalles usuario</th>
+    </tr>
+
+    <tr th:each="user : ${users}">
+
+      <td th:text="${user.code}"></td>
+      <td th:text="${user.name}"></td>
+      <td th:text="${user.email}"></td>
+
+      <td>
+        <form th:action="@{/library/deleteUser}" method="post">
+          <input type="hidden" name="userCode" th:value="${user.code}">
+          <button type="submit">Eliminar</button>
+        </form>
+      </td>
+      <td>
+        <a th:href="@{/library/userDetails(userCode=${user.code})}">Detalles</a>
+      </td>
+
+    </tr>
+
+  </table>
+</div>
+
+<a href="/library/lending">Ir a pagina de crear prestamo</a><br>
+<a href="/library/returning">Ir a pagina de devolver un libro</a><br>
+<a href="/library/createUser">Crear un Usuario</a><br>
+<a href="/library/active-lendings">Ver préstamos activos</a><br>
+<a href="/logout">Cerra sesion</a>
+
+</body>
+</html>
