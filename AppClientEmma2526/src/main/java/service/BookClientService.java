@@ -15,6 +15,10 @@ public class BookClientService {
         return connection.sendPostJson("/books/add-books", json);
     }
 
+    public HttpResponse listBook() {
+        return connection.sendGet("/books/list-books");
+    }
+
     private String convertirJson( List<Book> books){
 
         StringBuilder json = new StringBuilder();

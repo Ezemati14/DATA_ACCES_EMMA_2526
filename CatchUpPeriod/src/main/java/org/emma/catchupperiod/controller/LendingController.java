@@ -1,5 +1,6 @@
 package org.emma.catchupperiod.controller;
 
+import org.emma.catchupperiod.entitiesDTO.LendingAñoDto;
 import org.emma.catchupperiod.entitiesDTO.LendingDTO;
 import org.emma.catchupperiod.entitiesDTO.LendingInfoDTO;
 import org.emma.catchupperiod.services.LendingService;
@@ -63,5 +64,11 @@ public class LendingController {
     @GetMapping("/active")
     public ResponseEntity<List<LendingDTO>> getActiveBook(){
         return ResponseEntity.ok(lendingService.getActiveLendings());
+    }
+
+    //Funcion para buscar los lendings por fecha, pasandole el año solamente
+    @GetMapping("/lendings-by-year")
+    public List<LendingAñoDto> getLendingsByYear(@RequestParam Integer from, @RequestParam Integer to) {
+        return lendingService.obtenerPorAño(from, to);
     }
 }

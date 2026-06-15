@@ -146,4 +146,23 @@ public class BookService {
             throw new IllegalArgumentException("Category obligatoria");
         }
     }
+
+    //--------------------- FUNCIONES PARA APLICACION CLIENTE -----------------------------
+
+    public List<BookDto> getListBookDto() {
+        List<Book> books = (List<Book>) booksInterface.findAll();
+        List<BookDto> resultado = new ArrayList<>();
+
+        for(Book book : books) {
+            if(book.getCopies() > 0) {
+                BookDto dto = new BookDto();
+
+                dto.setIsbn(book.getIsbn());
+                dto.setTitle(book.getTitle());
+                dto.setCopies(book.getCopies());
+                resultado.add(dto);
+            }
+        }
+        return resultado;
+    }
 }

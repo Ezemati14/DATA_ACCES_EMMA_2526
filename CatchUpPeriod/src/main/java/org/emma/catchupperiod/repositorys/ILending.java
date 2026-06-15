@@ -7,6 +7,7 @@ import org.emma.catchupperiod.entities.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,4 +31,6 @@ public interface ILending extends CrudRepository<Lending, Integer> {
     Boolean existsByBorrower(User user);
 
     List<Lending> findByBorrower_Code(String code);
+
+    List<Lending> findByLendingdateBetween(LocalDate desde, LocalDate hasta);
 }

@@ -66,4 +66,13 @@ public class BookController {
         }
     }
 
+    //--------------------- FUNCIONES PARA APLICACION CLIENTE -----------------------------
+
+    //Vamos a obtener una lista de libros, entonces usamos un Get, y devolvemos una lista de libros DTO
+    @GetMapping("/list-books")
+    public List<BookDto> getListBookDto() {
+        List<BookDto> booksDto = bookService.getListBookDto();
+        return booksDto;
+    }
+
 }

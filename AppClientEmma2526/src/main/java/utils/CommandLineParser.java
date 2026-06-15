@@ -13,6 +13,7 @@ import java.util.Scanner;
 public class CommandLineParser {
 
     private LendingClientService lendingService = new LendingClientService();
+    private BookClientService bookService = new BookClientService();
     private Scanner scanner = new Scanner(System.in);
 
     //En esta funcion por parametro nos llega algo parecido a esto: ["-l", "1234567890", "A1234567"]
@@ -52,6 +53,10 @@ public class CommandLineParser {
 
                 System.out.println( "Código: "+ respuestaAddBook.getStatus());
                 System.out.println( respuestaAddBook.getBody() );
+                break;
+            case "-d":
+            case "--listBooks":
+                listaLibros();
                 break;
             case "-t":
             case "--txt":
@@ -122,6 +127,18 @@ public class CommandLineParser {
             writer.close();
             System.out.println("Archivo prestamos.txt creado");
         } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    private void listaLibros() {
+        HttpResponse respuesta = bookService.listBook();
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("libros.txt"));
+            writer.write(respuesta.getBody());
+            writer.close();
+            System.out.println("Archivo libros.txt creado");
+        }catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
