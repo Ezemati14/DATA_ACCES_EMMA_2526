@@ -54,14 +54,6 @@ public class CommandLineParser {
                 System.out.println( "Código: "+ respuestaAddBook.getStatus());
                 System.out.println( respuestaAddBook.getBody() );
                 break;
-            case "-d":
-            case "--listBooks":
-                listaLibros();
-                break;
-            case "-t":
-            case "--txt":
-                exportarPrestamosActivos();
-                break;
             default:
                 System.out.println("Comando desconocido");
         }
@@ -92,15 +84,15 @@ public class CommandLineParser {
         //Si la respuesta indica que no hay copias, le preguntamos al usuario
         if (cuerpo != null && cuerpo.toLowerCase().contains("no hay copias")) {
             //Le pregutamos al usuario si quiere reservar
-                System.out.print("Quiere reservar? (si/no): ");
+            System.out.print("Quiere reservar? (si/no): ");
 
-                String opcion = scanner.nextLine().trim().toLowerCase();
+            String opcion = scanner.nextLine().trim().toLowerCase();
 
             if (opcion.equals("si") || opcion.equals("s")) {
-                    //Como entro al if, volvemos a llamar a la api, y le pasamos true en el parametro de reservar
-                    HttpResponse respuestaReserva = lendingService.lendBook(isbn, userCode, true);
-                    //y mostramos la respuesta de la reserva
-                    System.out.println(respuestaReserva.getBody());
+                //Como entro al if, volvemos a llamar a la api, y le pasamos true en el parametro de reservar
+                HttpResponse respuestaReserva = lendingService.lendBook(isbn, userCode, true);
+                //y mostramos la respuesta de la reserva
+                System.out.println(respuestaReserva.getBody());
             } else {
                 System.out.println("Reserva cancelada");
             }
@@ -108,7 +100,7 @@ public class CommandLineParser {
         if(exportar) {
             HttpResponse infoPrestamo = lendingService.getLendingInfo(isbn, userCode);
             try {
-                BufferedWriter writer = new BufferedWriter(new FileWriter("prestamosInfo.txt"));
+                BufferedWriter writer = new BufferedWriter(new FileWriter("lendings.txt"));
                 writer.write(infoPrestamo.getBody());
                 writer.close();
                 System.out.println("Archivo prestamo.txt creado");
@@ -117,30 +109,4 @@ public class CommandLineParser {
             }
         }
     }
-
-    private void exportarPrestamosActivos() {
-        HttpResponse respuesta = lendingService.getActiveLendings();
-
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("prestamos.txt"));
-            writer.write(respuesta.getBody());
-            writer.close();
-            System.out.println("Archivo prestamos.txt creado");
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
-
-    private void listaLibros() {
-        HttpResponse respuesta = bookService.listBook();
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("libros.txt"));
-            writer.write(respuesta.getBody());
-            writer.close();
-            System.out.println("Archivo libros.txt creado");
-        }catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
-
 }

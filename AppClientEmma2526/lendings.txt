@@ -1,0 +1,1 @@
+{"isbn":"0141189207445","lendingDate":"2026-06-15","lendingId":13,"userCode":"M512776"}

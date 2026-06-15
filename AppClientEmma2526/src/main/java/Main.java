@@ -7,4 +7,5 @@ public class Main {
         parser.procesarComando(args);
     }
 }
-// Para prestar un libro, y crear un txt Run -> Edit Configurartions -> -l 9780195062052 T654322 -w
+// Para prestar un libro, y crear un txt Run -> Edit Configurartions -> -l 9780141028736 A786543 -w
+// Para prestar un libro, y crear un txt Run -> Edit Configurartions -> -l 0141189207445 M512776

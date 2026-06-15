@@ -23,8 +23,12 @@ public class LendingClientService {
     public HttpResponse getActiveLendings() {
         return connection.sendGet("/pretamos-activos");
     }
+
+    //Pasamos por parametro el isbn y el user code
     public HttpResponse getLendingInfo(String isbn, String userCode) {
+        //armamos los parametros que quedaria algo asi  isbn=0141189207445&userCode=A786543
         String parametros = "isbn=" + isbn + "&userCode=" + userCode;
+        //Y se le agregamos a la conxeion, y lo pasamos por parametros, para que conecte.
         return connection.sendGet("/lending/lending-info?" + parametros);
     }
 }
