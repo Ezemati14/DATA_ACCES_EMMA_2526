@@ -164,8 +164,8 @@ public class ControllerLibraryTh {
     }
 
 
-    //-------------- FUNCIONES PARA CANCELAR UNA RESERVA GET Y POST ----------------
 
+    //-------------------FUNCIONES PARA CANCELAR RESERVA ------
     //Mostramos la pagina para cancelar. Solamente es esto porq no mostramos ningun dato de nada.
     @GetMapping("/library/cancelReservation")
     public String cancelReservationPage() {
@@ -174,12 +174,16 @@ public class ControllerLibraryTh {
     //Cancelar una reserva pasando el isbn y el userCode, y se encarga de eliminar la reserva
     //https://localhost:8080/library/cancelReservation?isbn=0141189207445&userCode=A786543
     @PostMapping("/library/cancelReservation")
-    public String cancelarReserva(@RequestParam String isbn, @RequestParam String userCode,
-                                                Model model) {
+    public String cancelarReserva(@RequestParam String isbn,
+                                  @RequestParam String userCode,
+                                  Model model) {
         try {
+            //Pasamos por parametro lo que nos llega del html
             String resultado = reservationService.cancelReservation(isbn, userCode);
+            //Mostramos un mensaje de exito si todo fue bien
             model.addAttribute("mensaje", resultado);
         }catch (IllegalArgumentException e) {
+            //Agarramos la Exception que nos llega del servidor, si no existe la reserva
             model.addAttribute("mensaje", e.getMessage());
         }
         return "cancelReservation";

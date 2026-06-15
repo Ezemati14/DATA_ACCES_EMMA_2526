@@ -8,22 +8,22 @@
 <body>
 
 <div class="container">
-  <h2>Cancelar reserva</h2>
+    <h2>Cancelar reserva</h2>
 
-  <form th:action="@{/library/cancelReservation}" method="post">
-    <label>ISBN:</label>
-    <input type="text" name="isbn">
-    <br><br>
+    <form th:action="@{/library/cancelReservation}" method="post">
+        <label>ISBN:</label>
+        <input type="text" name="isbn">
+        <br><br>
 
-    <label>Código usuario:</label>
-    <input type="text" name="userCode">
-    <br><br>
-    <!-- Este boton se conecta con la  @PostMapping("/library/cancelReservation")
-     Y le paso por el inpunt los datos que estan en el name-->
-    <button type="submit">Cancelar reserva</button>
-  </form>
-
-  <p th:if="${mensaje}" th:text="${mensaje}"></p>
+        <label>Código usuario:</label>
+        <input type="text" name="userCode">
+        <br><br>
+        <!-- Este boton se conecta con la  @PostMapping("/library/cancelReservation")
+         Y le paso por el inpunt los datos que estan en el name-->
+        <button type="submit">Cancelar reserva</button>
+    </form>
+   <!-- Mostramos un mensaje de error si  -->
+    <p th:if="${mensaje}" th:text="${mensaje}"></p>
 
 </div>
 
