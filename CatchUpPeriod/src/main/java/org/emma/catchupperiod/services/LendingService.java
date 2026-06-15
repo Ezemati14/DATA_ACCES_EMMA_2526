@@ -259,10 +259,8 @@ public class LendingService {
     //--------------------- FUNCIONES PARA APLICACION CLIENTE -----------------------------
 
     public LendingInfoDTO getLendingInfo(String isbn, String userCode) {
-        Book book = booksRepository.findById(isbn)
-                .orElseThrow(() -> new IllegalArgumentException("Libro no encontrado"));
-        User user = usersRepository.findById(userCode)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+        Book book = booksRepository.findById(isbn).orElseThrow(() -> new IllegalArgumentException("Libro no encontrado"));
+        User user = usersRepository.findById(userCode).orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
         Optional<Lending> lending = lendingRepository.findByBookAndBorrowerAndReturningdateIsNull(book, user);
 
         System.out.println("ISBN: " + book.getIsbn());

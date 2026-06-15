@@ -48,14 +48,6 @@ public class ControllerLibraryTh {
         return lendingService.getActiveLendings();
     }
 
-    //Esto muestra en una pagina html los prestamos activos, los libros que no fueron devueltos
-    // con datos de ese usuario que tiene el libro.
-    @GetMapping("/library/active-lendings")
-    public String activeLendings(Model model) {
-        model.addAttribute("lendings", lendingService.getActiveLendings());
-        return "activeLendings";
-    }
-
     //Este post sirve para cuando le damos a prestar libro, nos llega el isbn y el usariio por paramtetros,
     // y con eso se hace la reserva, y se muestra un mensaje de exito o error
     //@RequestParam usamos esto porque se envian 2 param de diferentes objetos
@@ -187,5 +179,15 @@ public class ControllerLibraryTh {
             model.addAttribute("mensaje", e.getMessage());
         }
         return "cancelReservation";
+    }
+
+    //------------------- FUNCION PARA MOSTRAR LOS USUARIO QUE NO DEVOLVIERON EL LIBRO ---------------------
+
+    //Esto muestra en una pagina html los prestamos activos, los libros que no fueron devueltos
+    // con datos de ese usuario que tiene el libro.
+    @GetMapping("/library/active-lendings")
+    public String activeLendings(Model model) {
+        model.addAttribute("lendings", lendingService.getActiveLendings());
+        return "activeLendings";
     }
 }

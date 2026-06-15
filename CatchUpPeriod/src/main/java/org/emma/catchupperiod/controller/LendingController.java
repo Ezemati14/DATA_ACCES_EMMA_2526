@@ -35,7 +35,6 @@ public class LendingController {
     @GetMapping("/lending-info")
     public LendingInfoDTO getLendingInfo(@RequestParam String isbn, @RequestParam String userCode) {
         return lendingService.getLendingInfo(isbn, userCode);
-
     }
 
     //Pasamos por parametros el isbn del libro, y el codigo del usuario
