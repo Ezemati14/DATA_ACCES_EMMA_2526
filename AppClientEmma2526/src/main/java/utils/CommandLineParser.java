@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class CommandLineParser {
 
     private LendingClientService lendingService = new LendingClientService();
-    private BookClientService bookService = new BookClientService();
+
     private Scanner scanner = new Scanner(System.in);
 
     //En esta funcion por parametro nos llega algo parecido a esto: ["-l", "1234567890", "A1234567"]
